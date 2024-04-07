@@ -6,6 +6,7 @@ import './App.css'
 import { VIEWPORT_KEYS } from './constants/input';
 import { useAnimationFrame } from '@haensl/react-hooks';
 import { globalStore } from './state/globalStore';
+import { SocketProvider } from './components/SocketProvider/SocketProvider';
 
 const layer = {
   zIndex: 0,
@@ -53,10 +54,11 @@ function App() {
   })
 
   return (
-    <div
-       >
-      <Layer zIndex={layer.zIndex} clickable={layer.clickable} mapParams={mapParams}/>
-    </div>
+    <SocketProvider>
+      
+        <Layer zIndex={layer.zIndex} clickable={layer.clickable} mapParams={mapParams}/>
+      
+    </SocketProvider>
   )
 }
 

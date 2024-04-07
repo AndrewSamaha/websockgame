@@ -1,23 +1,51 @@
 // Setup basic express server
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const path = require('path');
 const server = require('http').createServer(app);
-const io = require('socket.io')(server);
+const io = require('socket.io')(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
+});
+
+app.use(cors("*"));
+
+
+
 const port = process.env.PORT || 3000;
+
 
 server.listen(port, () => {
   console.log('Server listening at port %d', port);
 });
 
 // Routing
+app.use((req, res, next) => {
+  console.log('setting access control allow origin header1')
+  res.setHeader('Access-Control-Allow-Origin', '*'); // Allow requests from any origin
+  // Other CORS headers can be added here if needed
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use((req, res, next) => {
+  console.log('setting access control allow origin header2')
+  res.setHeader('Access-Control-Allow-Origin', '*'); // Allow requests from any origin
+  // Other CORS headers can be added here if needed
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
 // Chatroom
 
 let numUsers = 0;
 
 io.on('connection', (socket) => {
+  console.log('connection')
   let addedUser = false;
 
   // when the client emits 'new message', this listens and executes
