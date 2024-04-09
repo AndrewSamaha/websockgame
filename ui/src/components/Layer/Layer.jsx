@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Char } from './Char/Char';
 import { observer } from "@legendapp/state/react"
@@ -8,6 +8,7 @@ import { Frag } from './Explosion/Frag/Frag';
 import { screenXtoWorldX, screenYtoWorldY } from '../../helpers/viewport';
 import { globalStore } from '../../state/globalStore';
 import { CHARTYPES } from '../../generators/units';
+import { SocketContext } from '../SocketProvider/SocketProvider'; // Import the SocketContext
 
 const layerPadding = 10;
 
@@ -19,7 +20,9 @@ export const Layer = observer(({ zIndex=0, mapParams }) => {
   const viewport = globalStore.viewport;
   const interactiveIdArray = globalStore.interactive.idArray[getter]();
   const independentCharArray = Object.values(globalStore.independent.dict[getter]());
-  
+  // Access the socket from the Socket context
+  const { socket, requestCreateUnit } = useContext(SocketContext);
+
   const charMapParams = {
     width: mapParams.width - layerPadding * 2,
     height: mapParams.height - layerPadding * 2
@@ -34,7 +37,8 @@ export const Layer = observer(({ zIndex=0, mapParams }) => {
   return (
     <div
       onMouseDown={(e) => {
-        addChar('interactive', {
+        //console.log({requestCreateUnit})
+        requestCreateUnit(addChar('interactive', {
             ...makeTower(),
             pos: {
               x: screenXtoWorldX(e.nativeEvent.layerX, viewport.pos.x.peek()),
@@ -43,7 +47,7 @@ export const Layer = observer(({ zIndex=0, mapParams }) => {
               speed: 0
             }
           },
-          globalStore);
+          globalStore));
       }}
       style={{
         position: 'absolute',

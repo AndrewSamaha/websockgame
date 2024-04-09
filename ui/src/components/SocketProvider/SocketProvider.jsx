@@ -54,7 +54,10 @@ const createInitialSocketState = () => {
     });
 
     return {
-        socket
+        socket,
+        requestCreateUnit: (unit) => {
+            socket.emit('request create unit', unit);
+        },
     };
 }
 // create SocketContext and pass it an initial value of createInitialSocketState
