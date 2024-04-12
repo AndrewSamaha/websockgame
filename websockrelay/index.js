@@ -4,8 +4,9 @@ const cors = require('cors');
 const app = express();
 const path = require('path');
 const server = require('http').createServer(app);
-// import uuid
-const { v4: uuidv4 } = require('uuid');
+
+const UserList = require('./lib/classes/UserList/UserList.js')
+const Crons = require('./lib/classes/Crons/Crons.js')
 
 const io = require('socket.io')(server, {
   cors: {
@@ -29,59 +30,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 let numUsers = 0;
 
-// create a class to represent each connected user
-class User {
-  constructor(socket) {
-    this.socket = socket
-    this.id = uuidv4();
-    this.requests = [];
-  }
-
-  setUserName(username) {
-    this.username = username;
-  }
-}
-
-// create a class to manage all connected users
-class UserList {
-  constructor() {
-    this.users= []
-    this.outstandingRequests = []
-  }
-
-  addUser(user) {
-    this.users.push(user)
-  }
-
-  removeUser(user) {
-    this.users = this.users.filter(u => u.id !== user.id)
-  }
-
-  createNewUser(socket) {
-    const user = new User(socket)
-    this.addUser(user)
-    return user
-  }
-
-  addNewRequest(request) {
-    this.outstandingRequests.push(request)
-  }
-
-  doRequestQueue(tLimit) {
-    const startTime = Date.now()
-    const requests = this.outstandingRequests.filter(r => r.timestamp < now - tLimit)
-    this.outstandingRequests = this.outstandingRequests.filter(r => r.timestamp >= now - tLimit)
-    requests.forEach(r => {
-      io.emit('create unit', r)
-    })
-    for (let i = 0; i < this.outstandingRequests.length && Date.now() < startTime + tlimit; i++) {
-      const r = requests[i]
-      console.log('create unit', r)
-    }
-  }
-}
-
 const userList = new UserList()
+const crons = new Crons()
+
+crons.addJob(2000, () => {
+  userList.broadcast('new message', {
+    username: 'server',
+    message: `${Math.floor(Date.now()/1000)} I am the server message New Hotness`
+  });
+});
+
+crons.start()
 
 io.on('connection', (socket) => {
   console.log('connection')
