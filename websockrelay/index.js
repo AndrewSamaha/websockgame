@@ -33,7 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 let numUsers = 0;
 
 const userList = new UserList();
-const crons = new Crons();
+const crons = new Crons({ io });
 const unitRequests = new UnitRequests();
 
 
@@ -86,7 +86,7 @@ io.on('connection', (socket) => {
 
   // when the client emits 'add user', this listens and executes
   socket.on('add user', (username) => {
-    if (addedUser) return;
+    //if (addedUser) return;
 
     // we store the username in the socket session for this client
     socket.username = username;

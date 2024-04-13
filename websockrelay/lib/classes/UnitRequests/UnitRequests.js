@@ -6,10 +6,11 @@ class UnitRequest {
     // console.log('new UnitRequest')
     // console.log(this.request)
   }
-  doRequest() {
+  doRequest({ io }) {
     const { id, type, pos } = this.request.data;
     const requesterName = this.request.requester.username;
     console.log(`  ${Math.floor(Date.now()/1000)}: Doing unit request by ${requesterName}: ${type} at ${pos.x} ${pos.y}`)
+    if (io) io.emit('new message', { username: 'server', message: `Doing unit request by ${requesterName}: ${type} at ${pos.x} ${pos.y} ${id}` })
   }
 }
 
@@ -49,13 +50,13 @@ class UnitRequests {
     this.requests.unshift(request);
   }
 
-  processRequests(limit) {
+  processRequests({ io, limit }) {
     let i = 0;
     this.requests.forEach(r => {
         if (limit && i > limit) return;
 
         const request = this.popRequest();
-        request.doRequest();
+        request.doRequest({ io });
     });
   }
 }

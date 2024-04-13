@@ -2,11 +2,12 @@ const { v4: uuidv4 } = require('uuid');
 
 // Create a cron job class to manage events
 class CronJob {
-    constructor(frequency, fn, runOnce = false) {
+    constructor({frequency, fn, runOnce = false, io}) {
         this.frequency = frequency
         this.fn = fn
         this.id = uuidv4()
         this.runOnce = runOnce;
+        this.io = io;
     }
     setNextRunTime(now = Date.now()) {
         this.nextRunTime = now + this.frequency;
@@ -17,21 +18,27 @@ class CronJob {
         this.setNextRunTime(now)
     }
     doJob(){
-        this.fn()
+        this.fn({io: this.io})
         this.setNextRunTime()
     }
 }
   
 class Crons {
-    constructor(checkInterval = 100) {
+    constructor({ io = null, checkInterval = 100 }) {
+        this.io = io;
         this.cronjobs = [];
         this.started = false;
         this.checkInterval = checkInterval;
         this.intervalHandle = null;
     }
 
+    decorateJob(job){
+        job.io = this.io;
+        return job;
+    }
+
     addJob(frequency, fn, runOnce = false) {
-        const job = new CronJob(frequency, fn, runOnce)
+        const job = new CronJob({frequency, fn, runOnce, io: this.io})
         this.cronjobs.push(job)
         return job.id
     }
