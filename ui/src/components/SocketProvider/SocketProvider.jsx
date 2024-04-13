@@ -5,6 +5,9 @@ import { io } from 'socket.io-client';
 // add imports for createContext
 import { createContext } from 'react';
 
+import { globalStore } from '../../state/globalStore';
+import { addChar } from '../../state/chars';
+import { makeBullet } from '../../generators/units';
 const createInitialSocketState = () => {
 
     const socket = io('http://localhost:3000');
@@ -32,6 +35,14 @@ const createInitialSocketState = () => {
 
     socket.on('new message', (data) => {
         console.log('new message', data)
+    });
+
+    socket.on('new unit', (data) => {
+        //console.log('new unit', data)
+        const A = makeBullet();
+        A.pos = data.data.pos;
+        // console.log(A)
+        addChar('interactive', A, globalStore);
     });
     // Whenever the server emits 'stop typing', kill the typing message
     // socket.on('stop typing', (data) => {

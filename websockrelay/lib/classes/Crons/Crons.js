@@ -23,7 +23,7 @@ class CronJob {
 }
   
 class Crons {
-    constructor(checkInterval = 1000) {
+    constructor(checkInterval = 100) {
         this.cronjobs = [];
         this.started = false;
         this.checkInterval = checkInterval;
@@ -63,6 +63,7 @@ class Crons {
                 ran = true;
             }
             if (ran && (job.runOnce || job.nextDeadline < now)) {
+                console.log(`removing job ${job.id} passed nextDeadline`)
                 return acc;
             }
             

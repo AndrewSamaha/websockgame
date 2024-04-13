@@ -5,8 +5,10 @@ const app = express();
 const path = require('path');
 const server = require('http').createServer(app);
 
-const UserList = require('./lib/classes/UserList/UserList.js')
-const Crons = require('./lib/classes/Crons/Crons.js')
+const UserList = require('./lib/classes/UserList/UserList.js');
+const Crons = require('./lib/classes/Crons/Crons.js');
+const UnitRequests = require('./lib/classes/UnitRequests/UnitRequests.js');
+const { makeBullet } = require('./lib/generators/bullet.js');
 
 const io = require('socket.io')(server, {
   cors: {
@@ -30,15 +32,25 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 let numUsers = 0;
 
-const userList = new UserList()
-const crons = new Crons()
+const userList = new UserList();
+const crons = new Crons();
+const unitRequests = new UnitRequests();
 
-crons.addJob(2000, () => {
-  userList.broadcast('new message', {
+
+const makeRandomBullet = () => {
+  const bullet = makeBullet();
+  userList.broadcast('new unit', {
     username: 'server',
-    message: `${Math.floor(Date.now()/1000)} I am the server message New Hotness`
+    data: bullet
   });
-});
+};
+
+crons.addJob(200, makeRandomBullet);
+
+crons.addJob(1000, unitRequests.processRequests.bind(unitRequests));
+
+
+
 
 crons.start()
 
@@ -46,6 +58,11 @@ io.on('connection', (socket) => {
   console.log('connection')
   let addedUser = false;
   const user = userList.createNewUser(socket);
+  socket.crons = crons;
+  socket.unitRequests = unitRequests;
+  socket.userList = userList;
+
+
 
   // when the client emits 'new message', this listens and executes
   socket.on('new message', (data) => {
@@ -63,8 +80,8 @@ io.on('connection', (socket) => {
       time: Date.now(),
       data: unit
     }
-    console.log('request create unit', request)
-    userList.addNewRequest(request)
+    // console.log('request create unit', request)
+    unitRequests.addRequest(request)
   });
 
   // when the client emits 'add user', this listens and executes
@@ -80,15 +97,17 @@ io.on('connection', (socket) => {
     socket.emit('login', {
       numUsers: numUsers
     });
-    // echo globally (all clients) that a person has connected
+  
     const userJoinedObj = {
       username: socket.username,
       numUsers: numUsers,
       id: user.id
     }
+    socket.user = user;
     socket.broadcast.emit('user joined', userJoinedObj);
-    console.log(userJoinedObj);
-
+  
+    console.log('adding user')
+    // console.log(user)
   });
 
   // when the client emits 'typing', we broadcast it to others
