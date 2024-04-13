@@ -10,7 +10,7 @@ class UnitRequest {
     const { id, type, pos } = this.request.data;
     const requesterName = this.request.requester.username;
     console.log(`  ${Math.floor(Date.now()/1000)}: Doing unit request by ${requesterName}: ${type} at ${pos.x} ${pos.y}`)
-    if (io) io.emit('new message', { username: 'server', message: `Doing unit request by ${requesterName}: ${type} at ${pos.x} ${pos.y} ${id}` })
+    if (io) io.emit('new unit v2', { username: 'server', message: `Doing unit request by ${requesterName}: ${type} at ${pos.x} ${pos.y} ${id}` })
   }
 }
 

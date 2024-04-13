@@ -44,6 +44,16 @@ const createInitialSocketState = () => {
         // console.log(A)
         addChar('interactive', A, globalStore);
     });
+
+    socket.on('new unit v2', (data) => {
+        console.log('new unit v2', data)
+        return;
+        const A = makeBullet();
+        A.pos = data.data.pos;
+        // console.log(A)
+        addChar('interactive', A, globalStore);
+    });
+
     // Whenever the server emits 'stop typing', kill the typing message
     // socket.on('stop typing', (data) => {
     //   console.log('stop typing', data);
