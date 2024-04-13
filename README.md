@@ -6,3 +6,4 @@
   1. position
   1. vector (with velocity)
   1. these units will only move in a stright line
+1. Maintain state on server

@@ -45,9 +45,9 @@ const makeRandomBullet = () => {
   });
 };
 
-crons.addJob(200, makeRandomBullet);
+// crons.addJob(200, makeRandomBullet);
 
-crons.addJob(1000, unitRequests.processRequests.bind(unitRequests));
+crons.addJob(200, unitRequests.processRequests.bind(unitRequests));
 
 
 

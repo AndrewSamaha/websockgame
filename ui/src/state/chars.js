@@ -26,7 +26,7 @@ export const createInitialGameState = () => {
 
     console.log('creating initial game state')
     const initialState = {
-        numTowers: 2,
+        numTowers: 0,
         numBugs: 4
     }
     
@@ -70,6 +70,10 @@ export const addChar = (storeName, char, thisObservable=null) => {
     if (!(typeof storeName === 'string' || storeName instanceof String)) throw(`something not a string was passed to addChar.storeName ${storeName}`)
     if (!char || !char.id) return;
     const idArray = thisObservable[storeName].idArray?.get() || [];
+    if (idArray.includes(char.id)) {
+        console.log(` bailing out of addChar, ${char.id} already in ${storeName}`)
+        return;
+    }
     thisObservable[storeName].idArray.set([...idArray, char.id]);
     const newDict = {...thisObservable[storeName].dict.get(), [char.id]: char};
     thisObservable[storeName].dict.set(newDict);

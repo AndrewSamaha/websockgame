@@ -8,6 +8,7 @@ import { createContext } from 'react';
 import { globalStore } from '../../state/globalStore';
 import { addChar } from '../../state/chars';
 import { makeBullet } from '../../generators/units';
+import unitDictionary from '../../generators/unitDictionary';
 const createInitialSocketState = () => {
 
     const socket = io('http://localhost:3000');
@@ -47,11 +48,13 @@ const createInitialSocketState = () => {
 
     socket.on('new unit v2', (data) => {
         console.log('new unit v2', data)
-        return;
-        const A = makeBullet();
-        A.pos = data.data.pos;
-        // console.log(A)
-        addChar('interactive', A, globalStore);
+        if (!unitDictionary[data.type]) {
+            console.log(`ERROR: new unit v2; received unknown unit type ${data.type}`)
+            return;
+        }
+        const newUnit = unitDictionary[data.type](data);
+        console.log(`new unit v2; adding received unit type ${data.type}`)
+        addChar('interactive', newUnit, globalStore);
     });
 
     // Whenever the server emits 'stop typing', kill the typing message

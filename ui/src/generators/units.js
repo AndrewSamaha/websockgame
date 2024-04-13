@@ -19,7 +19,7 @@ export const MOVETYPES = {
     RANDOM_WALK: 2,
 }
 
-export const makeChar = () => ({
+export const makeChar = (args) => ({
     id: uuidv4(),
     pos: rndPos(),
     moves: false,
@@ -28,28 +28,31 @@ export const makeChar = () => ({
     },
     moveType: MOVETYPES.NONE,
     type: CHARTYPES.NONE,
-    animate
+    animate,
+    ...args
 });
   
-export const makeBug = () => ({
+export const makeBug = (args) => ({
     ...makeChar(),
     representation: 'A',
     moves: true,
     maxAge: 30_000 * Math.random(),
     moveType: MOVETYPES.RANDOM_WALK,
-    type: CHARTYPES.BUG
+    type: CHARTYPES.BUG,
+    ...args
 })
 
-export const makeBullet = () => ({
+export const makeBullet = (args) => ({
     ...makeChar(),
     representation: '^',
     moves: true,
     maxAge: 1_000,
     moveType: MOVETYPES.STRAIGHT_LINE,
-    type: CHARTYPES.BULLET
+    type: CHARTYPES.BULLET,
+    ...args
 })
 
-export const makeTower = () => ({
+export const makeTower = (args) => ({
     ...makeChar(),
     representation: 'T',
     pos: {
@@ -59,12 +62,16 @@ export const makeTower = () => ({
     shoots: true,
     moves: false,
     shotsPerSecond: 2,
-    type: CHARTYPES.TOWER
+    type: CHARTYPES.TOWER,
+    ...args
 });
 
 const fragLetters = 'aloisu.,:123oknndi';
-export const makeFrag = ({ x, y }) => {
+export const makeFrag = (args) => {
+    // destructure x and y from args, or if args is undefined, set x and y to 0
+    const { x, y, ...otherArgs } = args || { x: 0, y: 0 };
     const id = uuidv4();
+
     return {
         id,
         uuid: id,
@@ -81,7 +88,8 @@ export const makeFrag = ({ x, y }) => {
         history: {
             remove: false
         },
-        animate: animateFrag
+        animate: animateFrag,
+        ...otherArgs
     }
 };
 
