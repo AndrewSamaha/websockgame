@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 import { enableReactUse } from '@legendapp/state/config/enableReactUse';
 import { Layer } from './components/Layer/Layer'
 import { GAME_SIZE } from './constants/game'
@@ -6,7 +6,7 @@ import './App.css'
 import { VIEWPORT_KEYS } from './constants/input';
 import { useAnimationFrame } from '@haensl/react-hooks';
 import { globalStore } from './state/globalStore';
-import { SocketProvider } from './components/SocketProvider/SocketProvider';
+import { SocketContext } from './components/SocketProvider/SocketProvider'; // Import the SocketContext
 
 const layer = {
   zIndex: 0,
@@ -20,6 +20,8 @@ const VIEWPORT_FRICTION = 0.997;
 enableReactUse();
 
 function App() {
+  const { socket, requestCreateUnit } = useContext(SocketContext);
+
   useEffect(() => {
     const handleKeyDown = (e) => VIEWPORT_KEYS.includes(e.code) && !e.repeat ? globalStore.viewport.input[e.code].set(Date.now) : 0;
     const handleKeyUp = (e) => VIEWPORT_KEYS.includes(e.code) && !e.repeat ? globalStore.viewport.input[e.code].set(0) : 0;
@@ -54,11 +56,10 @@ function App() {
   })
 
   return (
-    <SocketProvider>
-      
+    
+    <>
         <Layer zIndex={layer.zIndex} clickable={layer.clickable} mapParams={mapParams}/>
-      
-    </SocketProvider>
+    </>
   )
 }
 
