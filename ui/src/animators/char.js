@@ -7,7 +7,7 @@ import { actOnNearestBug } from '../helpers/interaction';
 import { globalStore } from '../state/globalStore';
 import { createExplosion } from '../generators/units';
 
-export const animate = (deltaTime, viewport, store, storeName, mapParams, id) => {
+export const animate = (deltaTime, viewport, store, storeName, mapParams, id, requestCreateUnit) => {
   const char = store.interactive.dict[id].get();
 
   if (!char) return;
@@ -27,7 +27,7 @@ export const animate = (deltaTime, viewport, store, storeName, mapParams, id) =>
   if (true && shoots) {
     if (!lastFireTime || Date.now() - lastFireTime > (1 / shotsPerSecond * 1000)) {
       actOnNearestBug(char, globalStore.interactive.dict.get(), 10_000, (target) => {
-        addChar(storeName, {
+        requestCreateUnit(addChar(storeName, {
             ...makeBullet(),
             pos: {
               x,
@@ -36,7 +36,7 @@ export const animate = (deltaTime, viewport, store, storeName, mapParams, id) =>
               speed: .2
             }
           },
-          store)
+          store))
         store.interactive.dict[id].lastFireTime.set(Date.now());
       })
     } 

@@ -74,6 +74,7 @@ export const addChar = (storeName, char, thisObservable=null) => {
         console.log(` bailing out of addChar, ${char.id} already in ${storeName}`)
         return;
     }
+    if (!thisObservable) return char;
     thisObservable[storeName].idArray.set([...idArray, char.id]);
     const newDict = {...thisObservable[storeName].dict.get(), [char.id]: char};
     thisObservable[storeName].dict.set(newDict);

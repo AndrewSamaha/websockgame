@@ -13,6 +13,7 @@ class UnitRequest {
     const unitData = {
         ...this.request.data,
     }
+    console.log(unitData)
     if (io) io.emit('new unit v2', unitData)
   }
 }

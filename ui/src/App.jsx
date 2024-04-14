@@ -45,7 +45,7 @@ function App() {
 
     Object.entries(globalStore.interactive.dict.peek()).map(([id, char]) => {
       const { animate } = char;
-      if (animate) animate(delta, globalStore.viewport, globalStore, 'interactive', mapParams, id)
+      if (animate) animate(delta, globalStore.viewport, globalStore, 'interactive', mapParams, id, requestCreateUnit)
     })
 
     Object.entries(globalStore.independent.dict.peek()).map(([id, char]) => {
