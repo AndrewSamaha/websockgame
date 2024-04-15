@@ -11,12 +11,27 @@ class UnitState {
         this.projectiles = [];
     }
 
-    addUnit(unit) {
-        if (isProjectile(unit)) {
-            this.projectiles.push(unit);
+    addTarget(target) {
+        // check to make sure target doesn't already exist in targets
+        if (this.targets.find(t => t.id === target.id)) {
+            console.log(`  target ${target.id} already exists in unitState`)
+            return
+        };
+        this.targets.push(target);
+    }
+
+    addProjectile(projectile) {
+        if (this.projectiles.find(p => p.id === projectile.id)) {
+            console.log(`  projectile ${target.id} already exists in unitState`)
             return;
         }
-        this.targets.push(unit);
+        this.projectiles.push(projectile);
+    }
+
+    addUnit(unit) {
+        console.log(`  adding ${unit.type} to unitState [${this.targets.length},${this.projectiles.length}]`)
+        if (isProjectile(unit)) return this.addProjectile(unit);
+        this.addTarget(unit);
     }
 
     getActiveProjectiles() {
@@ -40,7 +55,7 @@ class UnitState {
         if (projectiles.length === 0) return;
         // calculate each projectile's new position
         const now = Date.now();
-        
+
         projectiles.forEach(projectile => {
             projectile.pos.x += projectile.vel.x;
             projectile.pos.y += projectile.vel.y;
@@ -61,9 +76,37 @@ class UnitState {
         });
     }
 
+    moveUnit(unit) {
+        newPosition = straightLineMove(unit.pos);
+        unit.pos = newPosition;
+        return;
+        switch (unit.moveType) {
+            case 'RANDOM_WALK':
+                newPosition = straightLineMove({
+                    x: unit.pos.x,
+                    y: unit.pos.y,
+                    dir: rndDirNudge(unit.pos.dir),
+                    speed: rndSpeedNudge(unit.pos.speed)
+                });
+                break;
+            case 'STRAIGHT_LINE':
+                newPosition = straightLineMove(unit.pos);
+                break;
+            default:
+
+                break;
+        }
+        unit.pos = newPosition;
+    }
+
     tic() {
-        this.ticDoProjectiles();
+        this.targets.forEach(target => {
+            this.moveUnit(target);
+        })
+        this.projectiles.forEach(projectile => {
+            this.moveUnit(projectile);
+        });
     }
 }
 
-export default UnitState;
+module.exports = UnitState;

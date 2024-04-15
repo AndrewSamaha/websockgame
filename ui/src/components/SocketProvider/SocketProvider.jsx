@@ -80,7 +80,10 @@ const createInitialSocketState = () => {
     return {
         socket,
         requestCreateUnit: (unit) => {
-            socket.emit('request create unit', unit);
+            socket.emit('request create unit', {
+                ...unit,
+                timeCreateUnitRequest: Date.now()
+            });
         },
     };
 }

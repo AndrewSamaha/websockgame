@@ -8,6 +8,7 @@ const server = require('http').createServer(app);
 const UserList = require('./lib/classes/UserList/UserList.js');
 const Crons = require('./lib/classes/Crons/Crons.js');
 const UnitRequests = require('./lib/classes/UnitRequests/UnitRequests.js');
+const UnitState = require('./lib/classes/UnitState/UnitState.js');
 const { makeBullet } = require('./lib/generators/bullet.js');
 
 const io = require('socket.io')(server, {
@@ -32,25 +33,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 let numUsers = 0;
 
+const unitState = new UnitState();
 const userList = new UserList();
-const crons = new Crons({ io });
-const unitRequests = new UnitRequests();
+const crons = new Crons({ io, unitState });
+const unitRequests = new UnitRequests({ io, unitState });
 
-
-const makeRandomBullet = () => {
-  const bullet = makeBullet();
-  userList.broadcast('new unit', {
-    username: 'server',
-    data: bullet
-  });
-};
-
-// crons.addJob(200, makeRandomBullet);
 
 crons.addJob(200, unitRequests.processRequests.bind(unitRequests));
-
-
-
 
 crons.start()
 
@@ -78,7 +67,10 @@ io.on('connection', (socket) => {
       verb: 'createUnit',
       requester: user,
       time: Date.now(),
-      data: unit
+      data: {
+        ...unit,
+        timeServerReceivedCreateUnitRequest: Date.now()
+      }
     }
     // console.log('request create unit', request)
     unitRequests.addRequest(request)

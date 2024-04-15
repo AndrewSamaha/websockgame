@@ -22,6 +22,7 @@ export const MOVETYPES = {
 export const makeChar = (args) => ({
     id: uuidv4(),
     pos: rndPos(),
+    timeCreatedOnClient: Date.now(),
     moves: false,
     history: {
         remove: false
