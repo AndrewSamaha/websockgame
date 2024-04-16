@@ -71,7 +71,7 @@ export const addChar = (storeName, char, thisObservable=null) => {
     if (!char || !char.id) return;
     const idArray = thisObservable[storeName].idArray?.get() || [];
     if (idArray.includes(char.id)) {
-        console.log(` bailing out of addChar, ${char.id} already in ${storeName}`)
+        //console.log(` bailing out of addChar, ${char.id} already in ${storeName}`)
         return;
     }
     if (!thisObservable) return char;
@@ -79,4 +79,30 @@ export const addChar = (storeName, char, thisObservable=null) => {
     const newDict = {...thisObservable[storeName].dict.get(), [char.id]: char};
     thisObservable[storeName].dict.set(newDict);
     return char;
+}
+
+export const upsertChar = (storeName, char, thisObservable=null) => {
+    if (!thisObservable) throw(`no observable passed to upsertChar`)
+    if (!(typeof storeName === 'string' || storeName instanceof String)) throw(`something not a string was passed to upsertChar.storeName ${storeName}`)
+    if (!char || !char.id) return;
+    const idArray = thisObservable[storeName].idArray?.get() || [];
+    if (idArray.includes(char.id)) {
+        // const newDict = {
+        //     ...thisObservable[storeName].dict.get(),
+        //     [char.id]: char
+        // };
+        // thisObservable[storeName].dict.set(newDict);
+        thisObservable[storeName].dict[char.id].set(char);
+        console.log('upsertChar', char.id, 'in', storeName)
+        return char;
+    } else {
+        return addChar(storeName, char, thisObservable)
+    }
+}
+
+export const upsertChars = (storeName, charArray, thisObservable=null) => {
+    if (!thisObservable) throw(`no observable passed to upsertChars`)
+    if (!(typeof storeName === 'string' || storeName instanceof String)) throw(`something not a string was passed to upsertChars.storeName ${storeName}`)
+    if (!charArray || !charArray.length) return;
+    charArray.forEach(char => upsertChar(storeName, char, thisObservable))
 }

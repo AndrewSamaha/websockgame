@@ -6,7 +6,7 @@ import { io } from 'socket.io-client';
 import { createContext } from 'react';
 
 import { globalStore } from '../../state/globalStore';
-import { addChar } from '../../state/chars';
+import { addChar, upsertChars } from '../../state/chars';
 import { makeBullet } from '../../generators/units';
 import unitDictionary from '../../generators/unitDictionary';
 const createInitialSocketState = () => {
@@ -47,13 +47,13 @@ const createInitialSocketState = () => {
     });
 
     socket.on('new unit v2', (data) => {
-        console.log('new unit v2', data)
+        //console.log('new unit v2', data)
         if (!unitDictionary[data.type]) {
             console.log(`ERROR: new unit v2; received unknown unit type ${data.type}`)
             return;
         }
         const newUnit = unitDictionary[data.type](data);
-        console.log(`new unit v2; adding received unit type ${data.type}`)
+        // console.log(`new unit v2; adding received unit type ${data.type}`)
         addChar('interactive', newUnit, globalStore);
     });
 
@@ -62,11 +62,15 @@ const createInitialSocketState = () => {
         const timeClient = Date.now();
         const timeClientServerDiff = timeClient - timeServer;
 
-        console.log('unitState', data)
-        units.forEach((unit) =>{
-            console.log(unit)
-        })
+        console.log(`unitState broadcastId: ${broadcastId}`)
         console.log(`time-server diff: ${timeClientServerDiff} ms`)
+        console.log(`Upserting ${units.length} units`)
+        const newUnits = units.map(unit => {
+            const newUnit = unitDictionary[unit.type](unit);
+            return newUnit;
+        })
+        upsertChars('interactive', newUnits, globalStore);
+        
     })
 
     // Whenever the server emits 'stop typing', kill the typing message

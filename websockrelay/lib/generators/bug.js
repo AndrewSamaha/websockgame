@@ -20,7 +20,7 @@ const randomPositionInViewport = () => {
 const makeBug = () => ({
     id: uuidv4(),
     owner: 'server',
-    maxAge: 2_500,
+    maxAge: 3_500,
     type: 'BUG',
     pos: randomPositionInViewport()
 })
