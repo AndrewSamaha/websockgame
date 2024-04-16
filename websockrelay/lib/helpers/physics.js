@@ -1,6 +1,7 @@
 const Victor = require('victor');
 
-export const straightLineMove = ({pos, mapParams, delta}) => {
+const straightLineMove = ({pos, mapParams, delta}) => {
+    if (!pos.speed) return pos;
     const straightLineDistance = delta * pos.speed;
     const vec = new Victor(0, straightLineDistance);
     let {x, y} = vec.rotateBy(pos.dir);
@@ -13,4 +14,8 @@ export const straightLineMove = ({pos, mapParams, delta}) => {
         dir: pos.dir,
         speed: pos.speed
     };
+}
+
+module.exports = {
+    straightLineMove
 }

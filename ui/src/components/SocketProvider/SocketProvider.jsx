@@ -57,6 +57,18 @@ const createInitialSocketState = () => {
         addChar('interactive', newUnit, globalStore);
     });
 
+    socket.on('unitState', (data) => {
+        const { broadcastId, timeServer, units, age } = data;
+        const timeClient = Date.now();
+        const timeClientServerDiff = timeClient - timeServer;
+
+        console.log('unitState', data)
+        units.forEach((unit) =>{
+            console.log(unit)
+        })
+        console.log(`time-server diff: ${timeClientServerDiff} ms`)
+    })
+
     // Whenever the server emits 'stop typing', kill the typing message
     // socket.on('stop typing', (data) => {
     //   console.log('stop typing', data);

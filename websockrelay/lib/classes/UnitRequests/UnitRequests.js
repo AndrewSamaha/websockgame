@@ -7,11 +7,11 @@ class UnitRequest {
   doRequest({ io, unitState }) {
     const { id, type, pos } = this.request.data;
     const requesterName = this.request.requester.username;
-    console.log(`  ${Math.floor(Date.now()/1000)}: Doing unit request by ${requesterName}: ${type} at ${pos.x} ${pos.y}`)
+    //console.log(`  ${Math.floor(Date.now()/1000)}: Doing unit request by ${requesterName}: ${type} at ${pos.x} ${pos.y}`)
     const unitData = {
         ...this.request.data,
     }
-    console.log(unitData)
+    //console.log(unitData)
     if (io) io.emit('new unit v2', unitData)
     if (unitState) {
         unitState.addUnit(unitData);

@@ -66,8 +66,8 @@ export const animate = (deltaTime, viewport, store, storeName, mapParams, id, re
       newPosition = straightLineMove({
         x,
         y,
-        dir: rndDirNudge(dir), 
-        speed: rndSpeedNudge(speed)
+        dir,// dir: rndDirNudge(dir), 
+        speed //: rndSpeedNudge(speed)
       }, mapParams, deltaTime)
       break;
     case MOVETYPES.STRAIGHT_LINE:

@@ -10,6 +10,7 @@ const Crons = require('./lib/classes/Crons/Crons.js');
 const UnitRequests = require('./lib/classes/UnitRequests/UnitRequests.js');
 const UnitState = require('./lib/classes/UnitState/UnitState.js');
 const { makeBullet } = require('./lib/generators/bullet.js');
+const { makeBug } = require('./lib/generators/bug.js');
 
 const io = require('socket.io')(server, {
   cors: {
@@ -38,8 +39,19 @@ const userList = new UserList();
 const crons = new Crons({ io, unitState });
 const unitRequests = new UnitRequests({ io, unitState });
 
+unitState.attachIO(io);
+
 
 crons.addJob(200, unitRequests.processRequests.bind(unitRequests));
+crons.addJob(500, unitState.tic.bind(unitState));
+crons.addJob(2000, () => {
+  const bug = makeBug();
+  unitState.addUnit(bug);
+  io.emit('new unit v2', bug);
+});
+crons.addJob(10_000, () => {
+  unitState.broadcastState({ io });
+})
 
 crons.start()
 

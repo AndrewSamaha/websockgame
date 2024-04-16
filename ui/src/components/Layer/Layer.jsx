@@ -27,12 +27,12 @@ export const Layer = observer(({ zIndex=0, mapParams }) => {
     width: mapParams.width - layerPadding * 2,
     height: mapParams.height - layerPadding * 2
   }
-  useEffect(() => {
-    if (Object.entries(globalStore.interactive.dict.peek()).filter(([_, char]) => char.representation === 'A').length < 4) {
-      const A = makeBug();
-      addChar('interactive', A, globalStore);
-    }
-  }, [interactiveIdArray.length])
+  // useEffect(() => {
+  //   if (Object.entries(globalStore.interactive.dict.peek()).filter(([_, char]) => char.representation === 'A').length < 4) {
+  //     const A = makeBug();
+  //     addChar('interactive', A, globalStore);
+  //   }
+  // }, [interactiveIdArray.length])
   
   return (
     <div

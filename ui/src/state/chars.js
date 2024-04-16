@@ -27,7 +27,7 @@ export const createInitialGameState = () => {
     console.log('creating initial game state')
     const initialState = {
         numTowers: 0,
-        numBugs: 4
+        numBugs: 0
     }
     
     const chars = {};
