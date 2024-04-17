@@ -10,7 +10,7 @@ class UnitState {
     constructor() {
         this.targets = [];
         this.projectiles = [];
-        this.lastTicTime = 0;
+        this.lastTicTime = Date.now();
 
         this.broadcasts = 0;
         this.tics = 0;
@@ -85,27 +85,10 @@ class UnitState {
         });
     }
 
-    moveUnit(unit) {
-        const newPosition = straightLineMove({pos: unit.pos});
+    moveUnit(unit, delta) {
+        const newPosition = straightLineMove({pos: unit.pos, delta});
         unit.pos = newPosition;
         return;
-        switch (unit.moveType) {
-            case 'RANDOM_WALK':
-                newPosition = straightLineMove({
-                    x: unit.pos.x,
-                    y: unit.pos.y,
-                    dir: rndDirNudge(unit.pos.dir),
-                    speed: rndSpeedNudge(unit.pos.speed)
-                });
-                break;
-            case 'STRAIGHT_LINE':
-                newPosition = straightLineMove(unit.pos);
-                break;
-            default:
-
-                break;
-        }
-        unit.pos = newPosition;
     }
 
     ageUnits(collection) {
@@ -132,14 +115,23 @@ class UnitState {
         });
     }
 
-    moveUnits(collection) {
+    moveUnits(collection, delta) {
         collection.forEach(target => {
-            this.moveUnit(target);
+            this.moveUnit(target, delta);
+        })
+    }
+
+    incrementBroadcasts(collection) {
+        collection.forEach((unit)=> {
+            if (!unit.broadcasts) unit.broadcasts = 0;
+            unit.broadcasts++;
         })
     }
 
     broadcastState({io}) {
         this.broadcasts++;
+        this.incrementBroadcasts(this.targets);
+        this.incrementBroadcasts(this.projectiles);
         const message = {
             broadcastId: uuidv4(),
             timeServer: Date.now(),
@@ -149,7 +141,7 @@ class UnitState {
         }
         if (this.lastTicTime) message['age'] = Date.now() - this.lastTicTime;
         io.emit('unitState', message);
-        console.log({ unitState: message })
+        console.log(`${this.tics} ${this.broadcasts} id=${message.broadcastId} units.length=${message.units.length}`)
     }
 
     tic() {
@@ -157,7 +149,7 @@ class UnitState {
         const perf_ticStartTime = performance.now();
 
         const ticStartTime = Date.now();
-        const delta = ticStartTime - this.lastTicTime ? this.lastTicTime : 0;
+        const delta = ticStartTime - this.lastTicTime;
 
         // age units
         const { active: activeProjectiles, dead: deadProjectiles } = this.ageUnits(this.projectiles);
@@ -172,7 +164,8 @@ class UnitState {
         this.lastTicTime = ticStartTime;
         const perf_ticStopTime = performance.now();
         const perf_duration = perf_ticStopTime - perf_ticStartTime;
-        // console.log(`tic duration: ${Math.floor(perf_duration*1000)} us for ${(this.targets.length + this.projectiles.length)}`)
+
+        // console.log(`tic duration: ${Math.floor(perf_duration*1000)} us for ${(this.targets.length + this.projectiles.length)}, pruned ${deadTargets.length + deadProjectiles.length} units`)
     }
 }
 

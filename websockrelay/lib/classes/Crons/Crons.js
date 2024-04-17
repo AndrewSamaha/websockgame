@@ -25,7 +25,7 @@ class CronJob {
 }
   
 class Crons {
-    constructor({ io = null, checkInterval = 100 , unitState }) {
+    constructor({ io = null, checkInterval = 48 , unitState }) {
         this.io = io;
         this.unitState = unitState;
         this.cronjobs = [];

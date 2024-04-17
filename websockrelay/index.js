@@ -43,13 +43,13 @@ unitState.attachIO(io);
 
 
 crons.addJob(200, unitRequests.processRequests.bind(unitRequests));
-crons.addJob(500, unitState.tic.bind(unitState));
-crons.addJob(2000, () => {
+crons.addJob(100, unitState.tic.bind(unitState));
+crons.addJob(700, () => {
   const bug = makeBug();
   unitState.addUnit(bug);
   io.emit('new unit v2', bug);
 });
-crons.addJob(10_000, () => {
+crons.addJob(1_000, () => {
   unitState.broadcastState({ io });
 })
 
