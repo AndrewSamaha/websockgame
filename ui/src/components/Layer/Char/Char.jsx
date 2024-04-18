@@ -21,7 +21,8 @@ export const Char = observer(({ id, viewport }) => {
         position: 'absolute',
         left: `${worldXtoScreenX(x, viewport.pos.x.peek())}px`,
         top: `${worldYtoScreenY(y, viewport.pos.y.peek())}px`,
-        transform: `rotate(${dir+3.142*1.5}rad)`}}>
+        transform: `rotate(${dir+3.142*1.5}rad)`,
+        color: 'white'}}>
           {representation}
     </div>
   )

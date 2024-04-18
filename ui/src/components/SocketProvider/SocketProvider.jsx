@@ -6,7 +6,7 @@ import { io } from 'socket.io-client';
 import { createContext } from 'react';
 
 import { globalStore } from '../../state/globalStore';
-import { addChar, upsertChars } from '../../state/chars';
+import { addChar, upsertChars, truncAndInsertChars } from '../../state/chars';
 import { makeBullet } from '../../generators/units';
 import unitDictionary from '../../generators/unitDictionary';
 const createInitialSocketState = () => {
@@ -70,7 +70,7 @@ const createInitialSocketState = () => {
             return newUnit;
         })
         upsertChars('interactive', newUnits, globalStore);
-        
+        // truncAndInsertChars('interactive', newUnits, globalStore);
     })
 
     // Whenever the server emits 'stop typing', kill the typing message

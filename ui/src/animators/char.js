@@ -6,16 +6,26 @@ import { rndDirNudge, rndSpeedNudge, straightLineMove } from '../helpers/physics
 import { actOnNearestBug } from '../helpers/interaction';
 import { globalStore } from '../state/globalStore';
 import { createExplosion } from '../generators/units';
+import { networkHistoryEvents } from '../constants/networkHistoryEvents';
 
 export const animate = (deltaTime, viewport, store, storeName, mapParams, id, requestCreateUnit) => {
   const char = store.interactive.dict[id].get();
 
   if (!char) return;
   
-  const { pos, moves, moveType, maxAge, history, shoots, shotsPerSecond, type, lastFireTime } = char;
+  const { pos, moves, moveType, maxAge, history, shoots, shotsPerSecond, type, lastFireTime, networkHistory } = char;
   const {x, y, dir, speed} = pos; 
 
   // Age
+  if (true && maxAge && networkHistory) {
+    const birthTime = networkHistory.find(({event}) => event === networkHistoryEvents.FIRST_RECEIVED_FROM_SERVER).time;
+    if (birthTime && Date.now() - birthTime > maxAge) {
+      dropChar(storeName, id, store);
+      return;
+    } else {
+      char.age = Date.now() - birthTime;
+    }
+  }
   if (true && maxAge && history) {
     if (!history.birthTime) history.birthTime = Date.now();
     if (Date.now() - history.birthTime > maxAge) {
