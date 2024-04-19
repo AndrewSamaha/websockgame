@@ -25,13 +25,15 @@ class CronJob {
 }
   
 class Crons {
-    constructor({ io = null, checkInterval = 48 , unitState }) {
+    constructor({ io = null, checkInterval = 210 , unitState, useSetImmediate = false }) {
         this.io = io;
         this.unitState = unitState;
         this.cronjobs = [];
         this.started = false;
         this.checkInterval = checkInterval;
         this.intervalHandle = null;
+        this.stopMainLoop = false;
+        this.useSetImmediate = useSetImmediate;
     }
 
     decorateJob(job){
@@ -54,15 +56,24 @@ class Crons {
         this.cronjobs = this.cronjobs.filter(j => j.id !== id)
     }
 
+    stopMainLoop() {
+        this.stopMainLoop = true;
+        clearInterval(this.intervalHandle);
+    }
+
     start() {
         this.started = true;
         const now = Date.now();
         this.cronjobs.forEach(j => j.setStartTime(now))
-        console.log(`starting cron, checkInterval = ${this.checkInterval} ms, ${this.cronjobs.length} jobs to defined`)
-        this.intervalHandle = setInterval(() => {
-            this.doJobs()
-        }, this.checkInterval)
-        return this.intervalHandle;
+        console.log(`starting cron, checkInterval = ${this.checkInterval} ms, ${this.cronjobs.length} jobs defined`)
+        if (this.stopMainLoop) return;
+        if (!this.useSetImmediate) {
+            this.intervalHandle = setInterval(() => {
+                this.doJobs()
+            }, this.checkInterval)
+            return this.intervalHandle;
+        }
+        this.doJobs();
     }
 
     doJobs() {
@@ -85,6 +96,8 @@ class Crons {
             return acc;
 
         }, []);
+
+        if (this.useSetImmediate && !this.stopMainLoop) setImmediate(this.doJobs.bind(this));
     }
 
 }

@@ -36,14 +36,14 @@ let numUsers = 0;
 
 const unitState = new UnitState();
 const userList = new UserList();
-const crons = new Crons({ io, unitState });
+const crons = new Crons({ io, unitState, useSetImmediate: true });
 const unitRequests = new UnitRequests({ io, unitState });
 
 unitState.attachIO(io);
 
 
 crons.addJob(200, unitRequests.processRequests.bind(unitRequests));
-crons.addJob(100, unitState.tic.bind(unitState));
+crons.addJob(50, unitState.tic.bind(unitState));
 crons.addJob(700, () => {
   const bug = makeBug();
   unitState.addUnit(bug);
