@@ -1,4 +1,10 @@
 import React, { useEffect, useContext } from 'react'
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link
+} from "react-router-dom";
 import { enableReactUse } from '@legendapp/state/config/enableReactUse';
 import { Layer } from './components/Layer/Layer'
 import { GAME_SIZE } from './constants/game'
@@ -7,6 +13,8 @@ import { VIEWPORT_KEYS } from './constants/input';
 import { useAnimationFrame } from '@haensl/react-hooks';
 import { globalStore } from './state/globalStore';
 import { SocketContext } from './components/SocketProvider/SocketProvider'; // Import the SocketContext
+import { LandingPage } from './components/LandingPage/LandingPage';
+import { GamePage } from './components/GamePage/GamePage';
 
 const layer = {
   zIndex: 0,
@@ -19,7 +27,7 @@ const VIEWPORT_FRICTION = 0.997;
 
 enableReactUse();
 
-function App() {
+function OgApp() {
   const { socket, requestCreateUnit } = useContext(SocketContext);
 
   useEffect(() => {
@@ -61,6 +69,21 @@ function App() {
         <Layer zIndex={layer.zIndex} clickable={layer.clickable} mapParams={mapParams}/>
     </>
   )
+}
+
+function App() {
+  return (
+    <Router>
+      <div>
+        {/* A <Switch> looks through its children <Route>s and
+            renders the first one that matches the current URL. */}
+        <Routes>
+          <Route path="/game" element={<GamePage/>} />
+          <Route path="/" element={<LandingPage/>} />
+        </Routes>
+      </div>
+    </Router>
+  );
 }
 
 export default App
