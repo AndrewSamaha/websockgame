@@ -9,12 +9,27 @@ import { globalStore } from '../../state/globalStore';
 import { addChar, upsertChars, truncAndInsertChars } from '../../state/chars';
 import { makeBullet } from '../../generators/units';
 import unitDictionary from '../../generators/unitDictionary';
+
 const createInitialSocketState = () => {
 
-    const socket = io('http://localhost:3000');
+    const socket = io('http://localhost:3000', { autoConnect: false});
 
+    socket.on('authenticate yourself', () => {
+        console.log('received authentication request from server');
+        const user = globalStore.user.get();
+        console.log('heres what we have in the globalStore user')
+        console.log(user)
+        console.log('logging in with username:', user.username)
+        socket.emit('login', user.username);
+    });
+
+    socket.on('loginSuccessful', (data) => {
+        console.log('login successful', data);
+        globalStore.user.id.set(data.id);
+    });
+    
     socket.on('login', (data) => {
-    console.log('login', data);
+        console.log('login', data);
     // globalStore.user.set(data);
     });
 
@@ -62,9 +77,9 @@ const createInitialSocketState = () => {
         const timeClient = Date.now();
         const timeClientServerDiff = timeClient - timeServer;
 
-        console.log(`unitState broadcastId: ${broadcastId}`)
-        console.log(`time-server diff: ${timeClientServerDiff} ms`)
-        console.log(`Upserting ${units.length} units`)
+        // console.log(`unitState broadcastId: ${broadcastId}`)
+        // console.log(`time-server diff: ${timeClientServerDiff} ms`)
+        // console.log(`Upserting ${units.length} units`)
         const newUnits = units.map(unit => {
             const newUnit = unitDictionary[unit.type](unit);
             return newUnit;
@@ -85,7 +100,7 @@ const createInitialSocketState = () => {
     socket.io.on('reconnect', () => {
         console.log('you have been reconnected');
         if (1) {
-        socket.emit('add user', 'gamer');
+            socket.emit('add user', 'gamer');
         }
     });
 
@@ -101,6 +116,12 @@ const createInitialSocketState = () => {
                 timeCreateUnitRequest: Date.now()
             });
         },
+        connectToServer: () => {
+            const user = globalStore.user.get();
+            console.log('heres what we have in the globalStore user')
+            console.log(user)
+            socket.connect();
+        }
     };
 }
 // create SocketContext and pass it an initial value of createInitialSocketState

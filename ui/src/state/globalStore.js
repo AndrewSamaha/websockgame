@@ -35,7 +35,7 @@ export const globalStore = observable({
         }, new Victor(0,0))
         if (vector.lengthSq() == 0) return;
         if (vector.lengthSq() < 10) {
-          console.log('truncating vector', vector.length(), vector.lengthSq())
+          //console.log('truncating vector', vector.length(), vector.lengthSq())
           vector = new Victor(0,0);
         }
         //console.log('NOT truncating victor', vector.lengthSq())
@@ -51,6 +51,11 @@ export const globalStore = observable({
         globalStore.viewport.pos.x.set(position.x);
         globalStore.viewport.pos.y.set(position.y);
       }
+    },
+    user: {
+      username: '',
+      id: '',
+      loggedIn: false
     },
     ...createInitialGameState()
   });

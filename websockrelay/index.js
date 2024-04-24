@@ -62,7 +62,7 @@ io.on('connection', (socket) => {
   socket.crons = crons;
   socket.unitRequests = unitRequests;
   socket.userList = userList;
-
+  socket.emit('authenticate yourself');
 
 
   // when the client emits 'new message', this listens and executes
@@ -89,7 +89,7 @@ io.on('connection', (socket) => {
   });
 
   // when the client emits 'add user', this listens and executes
-  socket.on('add user', (username) => {
+  socket.on('login', (username) => {
     //if (addedUser) return;
 
     // we store the username in the socket session for this client
@@ -98,19 +98,17 @@ io.on('connection', (socket) => {
 
     ++numUsers;
     addedUser = true;
-    socket.emit('login', {
-      numUsers: numUsers
-    });
   
     const userJoinedObj = {
       username: socket.username,
       numUsers: numUsers,
       id: user.id
     }
+    socket.emit('loginSuccessful', userJoinedObj);
     socket.user = user;
     socket.broadcast.emit('user joined', userJoinedObj);
   
-    console.log('adding user')
+    console.log('adding user', user.username)
     // console.log(user)
   });
 

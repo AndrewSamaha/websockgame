@@ -117,7 +117,7 @@ export const upsertChar = (storeName, char, thisObservable=null, prevalidated=fa
     if (!char || !char.id) return;
     const idArray = thisObservable[storeName].idArray?.get() || [];
     if (idArray.includes(char.id)) {
-        const diff = charDiff(thisObservable[storeName].dict[char.id].get(), char);
+        // const diff = charDiff(thisObservable[storeName].dict[char.id].get(), char);
         const existingChar = thisObservable[storeName].dict[char.id].get();
         // console.log(diff);
         
@@ -134,10 +134,10 @@ export const upsertChar = (storeName, char, thisObservable=null, prevalidated=fa
                 }
             ]
         };
-        if (upsertedChar.broadcasts >= 3) {
-            console.log(upsertedChar)
-            console.log(diff)
-        }
+        // if (upsertedChar.broadcasts >= 3) {
+        //     console.log(upsertedChar)
+        //     console.log(diff)
+        // }
         thisObservable[storeName].dict[char.id].set(upsertedChar);
         return upsertedChar;
     } else {
