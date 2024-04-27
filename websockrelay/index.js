@@ -44,8 +44,12 @@ unitState.attachIO(io);
 
 crons.addJob(200, unitRequests.processRequests.bind(unitRequests));
 crons.addJob(50, unitState.tic.bind(unitState));
-crons.addJob(700, () => {
+crons.addJob(600, () => {
   const bug = makeBug();
+  bug.owner = {
+    username: 'server',
+    id: 'server'
+  }
   unitState.addUnit(bug);
   io.emit('new unit v2', bug);
 });

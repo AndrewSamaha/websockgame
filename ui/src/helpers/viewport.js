@@ -1,5 +1,9 @@
 import { GAME_SIZE } from "../constants/game"
-export const worldXtoScreenX = (worldX, viewportX) => (worldX - viewportX + GAME_SIZE.width/2);
-export const worldYtoScreenY = (worldY, viewportY) => (worldY - viewportY + GAME_SIZE.height/2);
-export const screenXtoWorldX = (screenX, viewportX) => (screenX + viewportX - GAME_SIZE.width/2);
-export const screenYtoWorldY = (screenY, viewportY) => (screenY + viewportY - GAME_SIZE.height/2);
+
+let xMod = GAME_SIZE.width/2;
+let yMod = GAME_SIZE.height/2;
+
+export const worldXtoScreenX = (worldX, viewportX) => (worldX - viewportX + xMod);
+export const worldYtoScreenY = (worldY, viewportY) => (worldY - viewportY + yMod);
+export const screenXtoWorldX = (screenX, viewportX) => (screenX + viewportX - xMod);
+export const screenYtoWorldY = (screenY, viewportY) => (screenY + viewportY - yMod);
