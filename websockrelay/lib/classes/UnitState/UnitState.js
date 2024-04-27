@@ -142,7 +142,7 @@ class UnitState {
         if (this.lastTicTime) message['age'] = Date.now() - this.lastTicTime;
         io.emit('unitState', message);
         console.log(`${this.tics} ${this.broadcasts} id=${message.broadcastId} units.length=${message.units.length}`)
-        console.log(this.targets)
+        //console.log(this.targets)
     }
 
     tic() {

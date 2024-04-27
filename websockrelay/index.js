@@ -11,6 +11,7 @@ const UnitRequests = require('./lib/classes/UnitRequests/UnitRequests.js');
 const UnitState = require('./lib/classes/UnitState/UnitState.js');
 const { makeBullet } = require('./lib/generators/bullet.js');
 const { makeBug } = require('./lib/generators/bug.js');
+const { makeResource } = require('./lib/generators/resource.js');
 
 const io = require('socket.io')(server, {
   cors: {
@@ -56,6 +57,16 @@ crons.addJob(600, () => {
 crons.addJob(1_000, () => {
   unitState.broadcastState({ io });
 })
+for (let i = 0; i < 10; i++) {
+  const resource = makeResource();
+  resource.owner = {
+    username: 'server',
+    id: 'server'
+  }
+  console.log(`resource at ${resource.pos.x},${resource.pos.y}`)
+  unitState.addUnit(resource);
+  io.emit('new unit v2', resource);
+}
 
 crons.start()
 
