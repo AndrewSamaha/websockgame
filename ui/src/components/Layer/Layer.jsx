@@ -36,6 +36,7 @@ export const Layer = observer(({ zIndex=0, mapParams }) => {
   
   return (
     <div
+      id={"layer"}
       onMouseDown={(e) => {
         //console.log({requestCreateUnit})
         requestCreateUnit(addChar('interactive', {
@@ -50,7 +51,7 @@ export const Layer = observer(({ zIndex=0, mapParams }) => {
           globalStore));
       }}
       style={{
-        position: 'absolute',
+        position: 'relative',
         zIndex: zIndex,
         backgroundColor: 'black', 
         border: '2px',

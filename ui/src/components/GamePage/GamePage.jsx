@@ -6,6 +6,7 @@ import { VIEWPORT_KEYS } from "../../constants/input";
 import { useAnimationFrame } from "@haensl/react-hooks";
 import { globalStore } from "../../state/globalStore";
 import { SocketContext } from "../SocketProvider/SocketProvider"; // Import the SocketContext
+import { GlobalStatusBar } from "./GlobalStatusBar/GlobalStatusBar";
 
 import "./GamePage.css";
 
@@ -55,8 +56,16 @@ export const GamePage = () => {
       })
 
     return (
-        <>
+        <div id={"gamepage"}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-start',
+            zIndex: `${layer.zIndex}`,
+            width: '800px'
+          }} >
+            <GlobalStatusBar />
             <Layer zIndex={layer.zIndex} clickable={layer.clickable} mapParams={mapParams}/>
-        </>
+        </div>
     );
 };

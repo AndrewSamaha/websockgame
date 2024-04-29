@@ -10,7 +10,8 @@ export const CHARTYPES = {
     TOWER: 'TOWER',
     BUG: 'BUG',
     BULLET: 'BULLET',
-    FRAG: 'FRAG'
+    FRAG: 'FRAG',
+    RESOURCE: 'RESOURCE',
 }
 
 export const MOVETYPES = {
@@ -32,7 +33,17 @@ export const makeChar = (args) => ({
     animate,
     ...args
 });
-  
+
+export const makeResource = (args) => ({
+    ...makeChar(),
+    representation: '$',
+    moves: false,
+    maxAge: 0,
+    moveType: MOVETYPES.NONE,
+    type: CHARTYPES.RESOURCE,
+    ...args
+});
+
 export const makeBug = (args) => ({
     ...makeChar(),
     representation: 'A',

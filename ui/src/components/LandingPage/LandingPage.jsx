@@ -2,6 +2,8 @@ import React, { useState, useContext } from "react";
 import { globalStore } from "../../state/globalStore";
 import { Link } from "react-router-dom";
 import { SocketContext } from "../SocketProvider/SocketProvider";
+import { GAME_NAME } from "../../constants/game";
+
 import "./LandingPage.css";
 
 export const LandingPage = () => {
@@ -31,7 +33,7 @@ export const LandingPage = () => {
 
     return (
         <div>
-            <h1>Landing Page</h1>
+            <h1>{GAME_NAME}</h1>
             <input 
                 type="text" 
                 placeholder="Enter username" 
