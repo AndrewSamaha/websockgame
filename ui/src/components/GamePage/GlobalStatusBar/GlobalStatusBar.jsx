@@ -1,20 +1,27 @@
+import React, { useState } from 'react';
 import { globalStore } from "../../../state/globalStore";
-
+import { styles } from "../../../styles/styles";
 const GLOBAL_STATUS_BAR_HEIGHT = 100;
+
 const ViewPortItem = () => {
     globalStore.viewport.use();
     const viewport = globalStore.viewport;
+
+    const [hover, setHover] = useState(false);
+
     return (<div style={{
-        backgroundColor: 'gray',
+        backgroundColor: hover ? styles.ui.callToAction.hex : styles.ui.secondary.hex,
         boxSizing: 'border-box',
         width: `10em`,
         height: '1.5em',
         padding: `0px`,
-        margin: '2px',
+        margin: '4px',
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'left'
-    }}>
+    }}
+    onMouseEnter={() => setHover(true)}
+    onMouseLeave={() => setHover(false)}>
     speed: {Math.round(viewport.pos.speed.get())}
     </div>)
 }
@@ -23,12 +30,12 @@ const ViewPortPosition = () => {
     const viewport = globalStore.viewport;
     
     return (<div style={{
-        backgroundColor: 'gray',
+        backgroundColor: styles.ui.secondary.hex,
         boxSizing: 'border-box',
         width: `10em`,
         height: '1.5em',
         padding: `0px`,
-        margin: '2px',
+        margin: '4px',
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'left'
@@ -42,7 +49,7 @@ export const GlobalStatusBar = () => {
         id={"globalstatusbar"}
         style={{
             height: `${GLOBAL_STATUS_BAR_HEIGHT}px`,
-            // backgroundColor: 'blue', 
+            backgroundColor: styles.ui.background.hex, 
             border: '2px',
             borderColor: 'black',
             boxSizing: 'border-box',
