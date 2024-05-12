@@ -2,6 +2,7 @@ import { observable } from '@legendapp/state';
 import Victor from 'victor';
 import { GAME_SIZE } from '../constants/game';
 import { createInitialGameState } from './chars';
+import { createInitialTileState } from './tiles';
 
 console.log(`generating globalStore`)
 export const globalStore = observable({
@@ -57,7 +58,8 @@ export const globalStore = observable({
       id: '',
       loggedIn: false
     },
-    ...createInitialGameState()
+    ...createInitialGameState(),
+    ...createInitialTileState()
   });
 
 console.log(`generated globalStore ${Object.keys(globalStore.peek())}`)

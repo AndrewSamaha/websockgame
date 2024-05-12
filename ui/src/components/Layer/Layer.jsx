@@ -5,10 +5,11 @@ import { observer } from "@legendapp/state/react"
 import { addChar } from '../../state/chars';
 import { makeBug, makeTower } from '../../generators/units';
 import { Frag } from './Explosion/Frag/Frag';
-import { screenXtoWorldX, screenYtoWorldY } from '../../helpers/viewport';
+import { mouseEventToWorldCoordinates } from '../../helpers/viewport';
 import { globalStore } from '../../state/globalStore';
 import { CHARTYPES } from '../../generators/units';
-import { SocketContext } from '../SocketProvider/SocketProvider'; // Import the SocketContext
+import { SocketContext } from '../SocketProvider/SocketProvider';
+import { Background } from './Background/Background';
 
 const layerPadding = 10;
 
@@ -27,29 +28,24 @@ export const Layer = observer(({ zIndex=0, mapParams }) => {
     width: mapParams.width - layerPadding * 2,
     height: mapParams.height - layerPadding * 2
   }
-  // useEffect(() => {
-  //   if (Object.entries(globalStore.interactive.dict.peek()).filter(([_, char]) => char.representation === 'A').length < 4) {
-  //     const A = makeBug();
-  //     addChar('interactive', A, globalStore);
-  //   }
-  // }, [interactiveIdArray.length])
   
   return (
     <div
       id={"layer"}
       onMouseDown={(e) => {
-        //console.log({requestCreateUnit})
+        const layer = document.getElementById('layer');
+
         requestCreateUnit(addChar('interactive', {
             ...makeTower(),
             pos: {
-              x: screenXtoWorldX(e.nativeEvent.layerX, viewport.pos.x.peek()),
-              y: screenYtoWorldY(e.nativeEvent.layerY, viewport.pos.y.peek()),
+              ...mouseEventToWorldCoordinates(e, layer, viewport.pos.x.peek(), viewport.pos.y.peek()),
               dir: Math.PI/2,
               speed: 0
             }
           },
           globalStore));
       }}
+  
       style={{
         position: 'relative',
         zIndex: zIndex,
@@ -63,6 +59,8 @@ export const Layer = observer(({ zIndex=0, mapParams }) => {
         margin: '0',
         overflow: 'hidden'
         }}>
+          <Background viewport={viewport} />
+          
           {
             
             independentCharArray.map((char) => {
@@ -102,6 +100,8 @@ export const Layer = observer(({ zIndex=0, mapParams }) => {
                   
               )})
           }
+
+          
     </div>
   )
 });

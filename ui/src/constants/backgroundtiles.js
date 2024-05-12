@@ -1,0 +1,1 @@
+export const BACKGROUND_TILE_SIZE = 600;
