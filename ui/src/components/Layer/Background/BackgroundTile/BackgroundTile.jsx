@@ -18,8 +18,8 @@ export const BackgroundTile = observer(({ id, viewport, tile }) => {
             color: darkgrayrgba,
             margin: '0',
             padding: '0',
-            height: `${BACKGROUND_TILE_SIZE}px`,
-            width: `${BACKGROUND_TILE_SIZE}px`,
+            height: `${BACKGROUND_TILE_SIZE.height}px`,
+            width: `${BACKGROUND_TILE_SIZE.width}px`,
             left: `${x}px`,
             top: `${y}px`
             }}>
