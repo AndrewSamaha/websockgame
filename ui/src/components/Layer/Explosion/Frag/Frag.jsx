@@ -12,8 +12,11 @@ export const Frag = observer(({ id }) => {
             style={{
                 zIndex: 'inherit',
                 position: 'absolute',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
                 left: `${worldXtoScreenX(frag.pos?.x, viewport.pos.x.peek())}px`,
-                top: `${worldYtoScreenY(frag.pos?.y, viewport.pos.y.peek())}px`,
+                top: `${worldYtoScreenY(frag.pos?.y, viewport.pos.y.peek())-420}px`,
                 transform: `rotate(${frag.pos?.spin + 3.142 * 1.5}rad)`,
                 fontSize: '.7em'
             }}>

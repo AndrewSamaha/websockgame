@@ -139,9 +139,32 @@ export const charspaceGivenElevationThick = (elevation) => {
     
 }
 
+export const charspaceGivenElevationSingle = (elevation) => {
+    if (elevation < 0.1) {
+        return '8';
+    } else if (elevation < 0.2) {
+        return '#';
+    } else if (elevation < 0.3) {
+        return 'O';
+    } else if (elevation < 0.4) {
+        return 'C';
+    } else if (elevation < 0.5) {
+        return 'Y';
+    } else if (elevation < 0.6) {
+        return 'x';
+    } else if (elevation < 0.7) {
+        return '|';
+    } else if (elevation < 0.8) {
+        return '~';
+    } else if (elevation < 0.9) {
+        return ';';
+    } else {
+        return '`';
+    }
+}
 
 export const charGivenElevation = (elevation) => {
-    const characters = charspaceGivenElevationThick(elevation);
+    const characters = charspaceGivenElevationSingle(elevation);
     const spaceWeight = 0;
     const characterWeight = 1;
     const space = ' ';
