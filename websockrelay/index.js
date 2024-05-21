@@ -119,7 +119,15 @@ io.on('connection', (socket) => {
       numUsers: numUsers,
       id: user.id
     }
-    socket.emit('loginSuccessful', userJoinedObj);
+    const userJoinedObjPrivate = {
+      ...userJoinedObj,
+      resources: {
+        ore: 100,
+        gold: 100,
+        wood: 100
+      }
+    }
+    socket.emit('loginSuccessful', userJoinedObjPrivate);
     socket.user = user;
     socket.broadcast.emit('user joined', userJoinedObj);
   
