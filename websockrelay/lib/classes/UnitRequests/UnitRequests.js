@@ -55,12 +55,15 @@ class UnitRequest {
           id: this.request.requester.id
         }
     }
-    if (unitData.type !== 'BULLET') console.log(unitData)
+    if (unitData.type !== 'BULLET') {
+      console.log(unitData)
+    }
 
     if (!unitState) {
       console.log(`this request has no unitState passed to doRequest, doing nothing.`)
       return;
     }
+    
     const user = userList.getUserById(this.request.requester.id);
 
     if (!chargeUserForUnit(user, unitData)) {
