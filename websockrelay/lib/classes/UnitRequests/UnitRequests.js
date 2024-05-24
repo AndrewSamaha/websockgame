@@ -65,7 +65,7 @@ class UnitRequest {
     }
     
     const user = userList.getUserById(this.request.requester.id);
-
+    
     if (!chargeUserForUnit(user, unitData)) {
         console.log('not enough resources to build unit');
         console.log(`userResources: ${JSON.stringify(user.resources)}`)
@@ -74,7 +74,7 @@ class UnitRequest {
 
     if (io) {
       io.emit('new unit v2', unitData);
-      io.emit('resource update', user.resources);
+      if (user) io.emit('resource update', user.resources);
     }
     unitState.addUnit(unitData);
   }
