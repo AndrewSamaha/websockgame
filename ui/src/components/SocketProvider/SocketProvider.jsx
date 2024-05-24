@@ -31,6 +31,11 @@ const createInitialSocketState = () => {
         }
         console.log({globalstoreuser: globalStore.user.get()})
     });
+
+    socket.on('resource update', (data) => {
+        console.log('resource update', data);
+        globalStore.user.resources.set(data);
+    });
     
     socket.on('login', (data) => {
         console.log('login', data);

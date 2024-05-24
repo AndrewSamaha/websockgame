@@ -38,7 +38,7 @@ let numUsers = 0;
 const unitState = new UnitState();
 const userList = new UserList();
 const crons = new Crons({ io, unitState, useSetImmediate: true });
-const unitRequests = new UnitRequests({ io, unitState });
+const unitRequests = new UnitRequests({ io, unitState, userList });
 
 unitState.attachIO(io);
 
@@ -110,6 +110,7 @@ io.on('connection', (socket) => {
     // we store the username in the socket session for this client
     socket.username = username;
     user.setUserName(username);
+    user.loadState();
 
     ++numUsers;
     addedUser = true;
@@ -120,12 +121,13 @@ io.on('connection', (socket) => {
       id: user.id
     }
     const userJoinedObjPrivate = {
-      ...userJoinedObj,
+      //...userJoinedObj,
       resources: {
         ore: 100,
         gold: 100,
         wood: 100
-      }
+      },
+      ...user.toJson()
     }
     socket.emit('loginSuccessful', userJoinedObjPrivate);
     socket.user = user;
