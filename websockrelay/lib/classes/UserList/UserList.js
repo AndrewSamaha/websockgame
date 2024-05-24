@@ -14,6 +14,22 @@ class User {
   setUserName(username) {
     this.username = username;
   }
+
+  loadState() {
+    this.resources = {
+      ore: 100,
+      gold: 100,
+      wood: 100
+    }
+  }
+
+  toJson() {
+    return {
+      username: this.username,
+      id: this.id,
+      resources: this.resources
+    }
+  }
 }
   
 // create a class to manage all connected users
