@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from "@legendapp/state/react"
 
 import { worldXtoScreenX, worldYtoScreenY } from '../../../helpers/viewport';
 import { globalStore } from '../../../state/globalStore';
 import { ZINDEX } from '../../../constants/zindex';
+import { styles  } from '../../../styles/styles';
 
 const CHAR_SIZE = 20;
 
 const ColorBubble = ({ children, char }) => {
+  const [hover, setHover] = useState(false);
+
   const { type } = char;
   const bubbleOpacity = 0.2;
   const bubbleSize = CHAR_SIZE;
@@ -36,12 +39,22 @@ const ColorBubble = ({ children, char }) => {
       top: `${top}px`,
       left: `${left}px`,
       backgroundColor: getColor(type),
+      borderColor: hover ? styles.ui.callToAction.hex : 'black',
+      borderStyle: hover ? 'solid' : 'none',
       width: `${bubbleSize}px`,
       height: `${bubbleSize*2}px`,
       borderRadius: '50%',
       position: 'relative',
       transition: 'transform 0.3s ease',
-    }}>
+    }}
+    onMouseEnter={() => char.hoverable ? setHover(true) && globalStore.ui.setHoveredChar(char) : null}
+    onMouseLeave={() => setHover(false)}
+    onMouseDown={(e) => {
+      globalStore.ui.setSelectedChar(char);
+      console.log('selected char', char);
+      e.stopPropagation();
+    }}
+    >
       {char.representation}
     </div>
   )

@@ -7,11 +7,15 @@ import { MAX_FRAGS, MIN_FRAGS } from '../constants/frags';
 
 export const CHARTYPES = {
     NONE: 'NONE',
-    TOWER: 'TOWER',
+    ARCHER: 'ARCHER',
+    BASE: 'BASE',
     BUG: 'BUG',
     BULLET: 'BULLET',
     FRAG: 'FRAG',
+    FIGHTER: 'FIGHTER',
     RESOURCE: 'RESOURCE',
+    TOWER: 'TOWER',
+    WORKER: 'WORKER',
 }
 
 export const MOVETYPES = {
@@ -30,6 +34,7 @@ export const makeChar = (args) => ({
     },
     moveType: MOVETYPES.NONE,
     type: CHARTYPES.NONE,
+    hoverable: true,
     animate,
     ...args
 });
@@ -54,6 +59,44 @@ export const makeBug = (args) => ({
     ...args
 })
 
+export const makeWorker = (args) => ({
+    ...makeChar(),
+    representation: 'o',
+    moves: true,
+    maxHealth: 75,
+    health: 75,
+    damage: () => Math.random() * 10,
+    range: 1,
+    moveType: MOVETYPES.STRAIGHT_LINE,
+    type: CHARTYPES.WORKER,
+    ...args
+})
+
+export const makeFighter = (args) => ({
+    ...makeWorker(),
+    representation: 'A',
+    moves: true,
+    maxHealth: 200,
+    health: 200,
+    moveType: MOVETYPES.STRAIGHT_LINE,
+    type: CHARTYPES.FIGHTER,
+    ...args
+})
+
+export const makeArcher = (args) => ({
+    ...makeFighter(),
+    representation: '@',
+    moves: true,
+    maxHealth: 150,
+    health: 150,
+    shoots: true,
+    damage: () => Math.random() * 10,
+    range: 5,
+    moveType: MOVETYPES.STRAIGHT_LINE,
+    type: CHARTYPES.ARCHER,
+    ...args
+})
+
 export const makeBullet = (args) => ({
     ...makeChar(),
     representation: '^',
@@ -61,6 +104,19 @@ export const makeBullet = (args) => ({
     maxAge: 1_000,
     moveType: MOVETYPES.STRAIGHT_LINE,
     type: CHARTYPES.BULLET,
+    hoverable: false,
+    ...args
+})
+
+export const makeBase = (args) => ({
+    ...makeChar(),
+    representation: '#',
+    pos: {
+      ...rndPos(),
+      dir: Math.PI*.5
+    },
+    shoots: false,
+    moves: false,
     ...args
 })
 
