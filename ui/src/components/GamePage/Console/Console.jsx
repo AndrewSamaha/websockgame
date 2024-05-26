@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
+import { SocketContext } from '../../SocketProvider/SocketProvider';
+import { globalStore } from '../../../state/globalStore';
 import { GAME_SIZE } from '../../../constants/game';
-const containerHeight = 20;
 const terminalHeight = 150;
 
 const TextLine = ({ children }) => {
@@ -22,60 +23,56 @@ const TextLine = ({ children }) => {
 }
 
 export const Console = (props) => {
-  const [terminalLineData, setTerminalLineData] = useState([
-    <TextLine key={'initialinput1'} >Here is some output</TextLine>,
-    <TextLine key={'initialinput2'} >Here is some more output</TextLine>
-  ]);
-  const endRef = useRef(null);
+    globalStore.console.buffer.use();
 
-  const handleInput = (input) => {
-    const key = `input${Math.floor(Math.random()*10000)}`;
-    setTerminalLineData([
-      ...terminalLineData,
-      <TextLine key={key}>{input}</TextLine>
-    ]);
-  };
+    const { sendUserCommand } = useContext(SocketContext);
+    const endRef = useRef(null);
 
-  useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [terminalLineData]);
+    const handleInput = (input) => {
+        sendUserCommand(input);
+        globalStore.console.log(`> ${input}`);
+    };
 
-  return (
-    <div className="container"
-    style={{
-        marginTop: '5px',
-        padding: '5px',
-        backgroundColor: 'black',
-        color: 'white',
-        width: `${GAME_SIZE.width}px`,
-        height: `${terminalHeight}px`,
-        display: 'inline-block',
-        overflow: 'auto',
-      }}
-    >
-        { terminalLineData }
-        <input 
-            id={'TerminalInput'}
-            style={{
-                border: 'none',
-                borderStyle: 'none',
-                // backgroundColor: 'darkgray',
-                outline: 'none',
-                marginTop: '5px',
-                marginLeft: '0px',
-                paddingLeft: '0px',
-                width: '98%',
-            }}
-            ref={endRef}
-            onKeyDown={(event) => {
-            if (event.key === 'Enter') {
-                event.preventDefault(); // prevent the form from being submitted
-                handleInput(event.target.value);
-                event.target.value = ''; // clear the input field
-            } 
-            }}/>
-        
-        
-    </div>
-  )
+    // useEffect(() => {
+    //     endRef.current?.scrollIntoView({ behavior: 'smooth' });
+    // }, [globalStore.console.buffer.peek().length]);
+
+    return (
+        <div className="container"
+        style={{
+            marginTop: '5px',
+            padding: '5px',
+            backgroundColor: 'black',
+            color: 'white',
+            width: `${GAME_SIZE.width}px`,
+            height: `${terminalHeight}px`,
+            display: 'inline-block',
+            overflow: 'auto',
+        }}
+        >
+            { globalStore.console.buffer.map((line, index) => (<TextLine key={index}>{line}</TextLine>))}
+            <input 
+                id={'TerminalInput'}
+                style={{
+                    border: 'none',
+                    borderStyle: 'none',
+                    outline: 'none',
+                    marginTop: '5px',
+                    marginLeft: '0px',
+                    paddingLeft: '0px',
+                    width: '98%',
+                }}
+                autoComplete='off'
+                ref={endRef}
+                onKeyDown={(event) => {
+                if (event.key === 'Enter') {
+                    event.preventDefault(); // prevent the form from being submitted
+                    handleInput(event.target.value);
+                    event.target.value = ''; // clear the input field
+                } 
+                }}/>
+            
+            
+        </div>
+    )
 };

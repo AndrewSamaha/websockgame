@@ -70,6 +70,12 @@ export const globalStore = observable({
       },
       getSelectedChar: () => globalStore.ui.selected_char.peek()
     },
+    console: {
+      buffer: [],
+      log: (message) => {
+        globalStore.console.buffer.set([...globalStore.console.buffer.peek(), message]);
+      },
+    },
     ...createInitialGameState(),
     ...createInitialTileState()
   });

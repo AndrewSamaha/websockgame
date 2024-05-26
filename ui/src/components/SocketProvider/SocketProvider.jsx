@@ -130,6 +130,9 @@ const createInitialSocketState = () => {
             console.log('heres what we have in the globalStore user')
             console.log(user)
             socket.connect();
+        },
+        sendUserCommand: (command) => {
+            socket.emit('user command', command);
         }
     };
 }

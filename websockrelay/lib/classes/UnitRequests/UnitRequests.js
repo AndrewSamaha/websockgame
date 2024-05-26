@@ -80,6 +80,21 @@ class UnitRequest {
   }
 }
 
+// create class ClientCommand that inherits from UnitRequest
+class ClientCommand extends UnitRequest {
+  constructor(request) {
+    super(request);
+  }
+  doRequest({ io, unitState, userList }) {
+    const { command, requester } = this.request;
+    const user = userList.getUserById(requester.id);
+    console.log(`performing client command: ${command}`)
+    if (io) {
+      io.emit('performed client command', this.command);
+    }
+  }
+}
+
 class UnitRequests {
   constructor({ io, unitState, userList }) {
     this.requests = [];
@@ -97,6 +112,16 @@ class UnitRequests {
         ...receivedRequest,
     };
     this.requests.push(new UnitRequest(request));
+  }
+
+  addClientCommand(receivedRequest, receivedTime = Date.now()) {
+    const request = {
+        requester: receivedRequest.requester,
+        timeReceivedByServer: receivedTime,
+        idServer: uuidv4(),
+        ...receivedRequest,
+    };
+    this.requests.push(new ClientCommand(request));
   }
 
   removeRequest(request) {

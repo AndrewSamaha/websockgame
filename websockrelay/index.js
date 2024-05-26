@@ -137,6 +137,16 @@ io.on('connection', (socket) => {
     // console.log(user)
   });
 
+  socket.on('user command', (command) => {
+    console.log('user command', command)
+    const request = {
+      command,
+      requester: user,
+      time: Date.now(),
+    }
+    // console.log('request create unit', request)
+    unitRequests.addClientCommand(request)
+  })
   // when the client emits 'typing', we broadcast it to others
   socket.on('typing', () => {
     socket.broadcast.emit('typing', {
