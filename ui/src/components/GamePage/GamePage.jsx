@@ -7,6 +7,7 @@ import { useAnimationFrame } from "@haensl/react-hooks";
 import { globalStore } from "../../state/globalStore";
 import { SocketContext } from "../SocketProvider/SocketProvider"; // Import the SocketContext
 import { GlobalStatusBar } from "./GlobalStatusBar/GlobalStatusBar";
+import { Console } from "./Console/Console";
 
 import "./GamePage.css";
 
@@ -23,8 +24,23 @@ export const GamePage = () => {
     const { socket, requestCreateUnit } = useContext(SocketContext);
 
     useEffect(() => {
-        const handleKeyDown = (e) => VIEWPORT_KEYS.includes(e.code) && !e.repeat ? globalStore.viewport.input[e.code].set(Date.now) : 0;
-        const handleKeyUp = (e) => VIEWPORT_KEYS.includes(e.code) && !e.repeat ? globalStore.viewport.input[e.code].set(0) : 0;
+        const terminalInput = document.getElementById('TerminalInput');
+        const onTerminal = () => document.activeElement === terminalInput;
+        const handleKeyDown = (e) => {
+          if (onTerminal()) {
+            if (e.key === 'Escape') e.target.blur(); // remove focus from the input field
+            return;
+          }
+          VIEWPORT_KEYS.includes(e.code) && !e.repeat ? globalStore.viewport.input[e.code].set(Date.now) : 0
+        };
+        const handleKeyUp = (e) => {
+          if (onTerminal()) return;  
+          if (e.code === 'Slash') {
+            terminalInput.focus();
+            return;
+          }
+          VIEWPORT_KEYS.includes(e.code) && !e.repeat ? globalStore.viewport.input[e.code].set(0) : 0
+        };
         document.addEventListener('keydown', handleKeyDown);
         document.addEventListener('keyup', handleKeyUp);
     }, []);
@@ -66,6 +82,7 @@ export const GamePage = () => {
           }} >
             <GlobalStatusBar />
             <Layer zIndex={layer.zIndex} clickable={layer.clickable} mapParams={mapParams}/>
+            <Console />
         </div>
     );
 };
