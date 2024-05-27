@@ -48,9 +48,9 @@ class UserList {
   }
 
   createNewUser(socket) {
-    const user = new User(socket)
-    this.addUser(user)
-    return user
+    const user = new User(socket);
+    this.addUser(user);
+    return user;
   }
 
   addNewRequest(request) {
@@ -73,6 +73,10 @@ class UserList {
   // get an active user
   getUserById(id) {
     return this.users.find(u => u.id === id)
+  }
+
+  getUserByName(username) {
+    return this.users.find(u => u.username === username)
   }
 
   // get one active user
