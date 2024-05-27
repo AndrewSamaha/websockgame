@@ -33,10 +33,6 @@ export const Console = (props) => {
         globalStore.console.log(`> ${input}`);
     };
 
-    // useEffect(() => {
-    //     endRef.current?.scrollIntoView({ behavior: 'smooth' });
-    // }, [globalStore.console.buffer.peek().length]);
-
     return (
         <div className="container"
         style={{
