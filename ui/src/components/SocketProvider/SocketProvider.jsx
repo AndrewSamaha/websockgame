@@ -97,6 +97,12 @@ const createInitialSocketState = () => {
         // truncAndInsertChars('interactive', newUnits, globalStore);
     })
 
+    socket.on('performed client command', (data) => {
+        console.log('performed client command', data);
+        globalStore.console.log(data.response);
+    });
+
+
     // Whenever the server emits 'stop typing', kill the typing message
     // socket.on('stop typing', (data) => {
     //   console.log('stop typing', data);
@@ -130,6 +136,9 @@ const createInitialSocketState = () => {
             console.log('heres what we have in the globalStore user')
             console.log(user)
             socket.connect();
+        },
+        sendUserCommand: (command) => {
+            socket.emit('user command', command);
         }
     };
 }

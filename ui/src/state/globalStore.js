@@ -58,6 +58,24 @@ export const globalStore = observable({
       id: '',
       loggedIn: false
     },
+    ui: {
+      hovered_char: null,
+      selected_char: null,
+      setHoveredChar: (char) => {
+        globalStore.ui.hovered_char.set(char);
+      },
+      getHoveredChar: () => globalStore.ui.hovered_char.peek(),
+      setSelectedChar: (char) => {
+        globalStore.ui.selected_char.set(char);
+      },
+      getSelectedChar: () => globalStore.ui.selected_char.peek()
+    },
+    console: {
+      buffer: [],
+      log: (message) => {
+        globalStore.console.buffer.set([...globalStore.console.buffer.peek(), message]);
+      },
+    },
     ...createInitialGameState(),
     ...createInitialTileState()
   });
