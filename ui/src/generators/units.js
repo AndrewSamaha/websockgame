@@ -117,6 +117,7 @@ export const makeBase = (args) => ({
     },
     shoots: false,
     moves: false,
+    type: CHARTYPES.BASE,
     ...args
 })
 
