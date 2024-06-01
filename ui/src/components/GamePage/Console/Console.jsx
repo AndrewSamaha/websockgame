@@ -8,15 +8,15 @@ const terminalHeight = 150;
 const TextLine = ({ children }) => {
     return (
         <div style={{
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        width: '100%',
-        height: '1.2em',
-        margin: '0',
-        padding: '0',
-        overflow: 'hidden',
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            width: '100%',
+            height: '1.2em',
+            margin: '0',
+            padding: '0',
+            overflow: 'hidden',
         }}>
             {children}
         </div>
@@ -30,10 +30,8 @@ export const Console = (props) => {
     const endRef = useRef(null);
 
     const handleInput = (input) => {
-        // sendUserCommand(input);
         globalStore.console.log(`> ${input}`);
         handleConsoleCommand(input, globalStore, globalStore.user, () => sendUserCommand(input));
-        
     };
 
     return (
