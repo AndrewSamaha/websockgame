@@ -8,14 +8,8 @@ const commands = {
         action: (command, context, user) => {
             const { console, ui } = context;
             const cmdParts = command.toLowerCase().split(' ')
-            if (cmdParts.length < 2) {
-                console.log('build command requires a unit type to build, or help to see available units');
-                return;
-            }
-            if (cmdParts[1].toLowerCase() === 'help') {
+            if (cmdParts.length < 2 || cmdParts[1].toLowerCase() === 'help') {
                 console.log(`available units to build: ${Object.keys(unitDictionary).join(', ')}`);
-                // nction toLowerCase() { [native code] }, function toLowerCase() { [native code] }, function toLowerCase() { [native code] }, function toLowerCase() { [native code] }, function toLowerCase() { [native code] }, function toLowerCase() { [native code] }
-
                 return;
             }
             if (Object.keys(unitDictionary).map(x=>x.toLowerCase()).includes( cmdParts[1].toLowerCase())) {
@@ -27,13 +21,15 @@ const commands = {
                 }) => {
                     console.log(`building ${cmdParts[1]}...`);
                     const unitGenerator = unitDictionary[cmdParts[1].toUpperCase()];
+                    const unit = unitGenerator();
                     window.console.log({unitGenerator})
                     requestCreateUnit({
-                        ...unitGenerator(),
+                        ...unit,
                         pos: {
-                          ...worldCoordinates,
-                          dir: Math.PI/2,
-                          speed: 0
+                            dir: Math.PI/2,
+                            speed: 0,
+                            ...unit.pos,
+                            ...worldCoordinates
                         }
                     });
                 });

@@ -39,18 +39,6 @@ export const Layer = observer(({ zIndex=0, mapParams }) => {
           worldCoordinates: mouseEventToWorldCoordinates(e, layer, viewport.pos.x.peek(), viewport.pos.y.peek()),
           requestCreateUnit
         });
-        return;
-        
-
-        requestCreateUnit({
-            ...makeTower(),
-            pos: {
-              ...mouseEventToWorldCoordinates(e, layer, viewport.pos.x.peek(), viewport.pos.y.peek()),
-              dir: Math.PI/2,
-              speed: 0
-            }
-        });
-        
       }}
   
       style={{
