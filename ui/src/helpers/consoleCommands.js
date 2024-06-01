@@ -14,7 +14,7 @@ const commands = {
             }
             if (Object.keys(unitDictionary).map(x=>x.toLowerCase()).includes( cmdParts[1].toLowerCase())) {
                 console.log(`setting click action to: building ${cmdParts[1]}...`);
-                ui.setClickAction(({
+                ui.setLayerLeftClickAction(({
                     layer,
                     worldCoordinates,
                     requestCreateUnit
