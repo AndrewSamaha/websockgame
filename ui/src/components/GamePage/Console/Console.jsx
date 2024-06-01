@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { SocketContext } from '../../SocketProvider/SocketProvider';
 import { globalStore } from '../../../state/globalStore';
+import { handleConsoleCommand } from '../../../helpers/consoleCommands';
 import { GAME_SIZE } from '../../../constants/game';
 const terminalHeight = 150;
 
@@ -29,8 +30,10 @@ export const Console = (props) => {
     const endRef = useRef(null);
 
     const handleInput = (input) => {
-        sendUserCommand(input);
+        // sendUserCommand(input);
         globalStore.console.log(`> ${input}`);
+        handleConsoleCommand(input, globalStore, globalStore.user, () => sendUserCommand(input));
+        
     };
 
     return (

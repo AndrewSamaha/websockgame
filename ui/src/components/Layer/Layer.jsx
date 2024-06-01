@@ -34,6 +34,13 @@ export const Layer = observer(({ zIndex=0, mapParams }) => {
       id={"layer"}
       onMouseDown={(e) => {
         const layer = document.getElementById('layer');
+        globalStore.ui.performClickActionOnce({
+          layer,
+          worldCoordinates: mouseEventToWorldCoordinates(e, layer, viewport.pos.x.peek(), viewport.pos.y.peek()),
+          requestCreateUnit
+        });
+        return;
+        
 
         requestCreateUnit({
             ...makeTower(),

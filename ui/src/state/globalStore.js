@@ -59,6 +59,27 @@ export const globalStore = observable({
       loggedIn: false
     },
     ui: {
+      dynamicFunctions: {
+        clickAction: () => {},
+      },
+      performClickActionOnce: (args) => {
+        const { clickAction } = globalStore.ui.dynamicFunctions.peek();
+        
+        // check if action is a function
+        
+        if (clickAction) {
+          if (typeof clickAction === 'function') {
+            console.log('performing click clickAction')
+            clickAction(args);
+          } else {
+            console.log('clickAction is not a function:')
+            console.log({clickAction})
+          }
+        } else {
+          console.log('performClickActionOnce: no click action')
+        }
+        globalStore.ui.setClickAction(null);
+      },
       hovered_char: null,
       selected_char: null,
       setHoveredChar: (char) => {
@@ -68,7 +89,20 @@ export const globalStore = observable({
       setSelectedChar: (char) => {
         globalStore.ui.selected_char.set(char);
       },
-      getSelectedChar: () => globalStore.ui.selected_char.peek()
+      getSelectedChar: () => globalStore.ui.selected_char.peek(),
+      setClickAction: (action) => {
+        if (!action) console.log('setting click action to NULL')
+        else {
+          if (typeof action === 'function') {
+            console.log('setting click action to a function')
+          } else {
+            console.log('setting click action to a non-function', action)
+          }
+        }
+        globalStore.ui.dynamicFunctions.assign({
+          clickAction: action
+        });
+      }
     },
     console: {
       buffer: [],
