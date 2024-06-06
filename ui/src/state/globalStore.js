@@ -3,6 +3,7 @@ import Victor from 'victor';
 import { GAME_SIZE } from '../constants/game';
 import { createInitialGameState } from './chars';
 import { createInitialTileState } from './tiles';
+import { ACTIONS } from '../generators/actions';
 
 console.log(`generating globalStore`)
 export const globalStore = observable({
@@ -60,13 +61,23 @@ export const globalStore = observable({
     },
     ui: {
       dynamicFunctions: {
-        clickAction: () => {},
+        leftClickAction: () => {},
+        rightClickAction: () => {}
       },
       performLayerLeftClickActionOnce: (args) => {
-        const { clickAction } = globalStore.ui.dynamicFunctions.peek();
-        if (clickAction && typeof clickAction === 'function')
-            clickAction(args);
+        const { leftClickAction } = globalStore.ui.dynamicFunctions.peek();
+        if (leftClickAction && typeof leftClickAction === 'function')
+            leftClickAction(args);
         globalStore.ui.setLayerLeftClickAction(null);
+      },
+      performLayerRightClickActionOnce: (args) => {
+        const { rightClickAction } = globalStore.ui.dynamicFunctions.peek();
+        if (rightClickAction && typeof rightClickAction === 'function')
+            rightClickAction({
+              ...args,
+              unit: globalStore.ui.getSelectedChar()
+            });
+        globalStore.ui.setLayerRightClickAction(null);
       },
       hovered_char: null,
       selected_char: null,
@@ -76,20 +87,32 @@ export const globalStore = observable({
       getHoveredChar: () => globalStore.ui.hovered_char.peek(),
       setSelectedChar: (char) => {
         globalStore.ui.selected_char.set(char);
+
+        if (char.actions.rightClickOnLayer) {
+          console.log('setting right click action', char.actions.rightClickOnLayer)
+          globalStore.ui.setLayerRightClickAction(ACTIONS[char.actions.rightClickOnLayer].initiate)
+        } else {
+          globalStore.ui.setLayerRightClickAction(() => {})
+        }
+        if (char.actions.leftClickOnLayer) {
+          console.log('setting left click action', char.actions.leftClickOnLayer)
+          globalStore.ui.setLayerLeftClickAction(ACTIONS[char.actions.leftClickOnLayer].initiate)
+        } else {
+          globalStore.ui.setLayerLeftClickAction(() => {})
+        }
+
       },
       getSelectedChar: () => globalStore.ui.selected_char.peek(),
       setLayerLeftClickAction: (action) => {
-        if (!action) console.log('setting click action to NULL')
-        else {
-          if (typeof action === 'function') {
-            console.log('setting click action to a function')
-          } else {
-            console.log('setting click action to a non-function', action)
-          }
-        }
         globalStore.ui.dynamicFunctions.assign({
           ...globalStore.ui.dynamicFunctions.peek(),
-          clickAction: action
+          leftClickAction: action
+        });
+      },
+      setLayerRightClickAction: (action) =>{
+        globalStore.ui.dynamicFunctions.assign({
+          ...globalStore.ui.dynamicFunctions.peek(),
+          rightClickAction: action
         });
       }
     },

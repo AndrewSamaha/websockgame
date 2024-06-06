@@ -131,6 +131,13 @@ const createInitialSocketState = () => {
                 timeCreateUnitRequest: Date.now()
             });
         },
+        requestUnitAction: (unit, action) => {
+            socket.emit('request unit action', {
+                unit,
+                action,
+                timeRequestUnitAction: Date.now()
+            });
+        },
         connectToServer: () => {
             const user = globalStore.user.get();
             console.log('heres what we have in the globalStore user')

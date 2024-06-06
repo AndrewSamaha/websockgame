@@ -4,6 +4,7 @@ import { animate } from '../animators/char';
 import { animate as animateFrag } from '../animators/frag';
 import { addChar } from '../state/chars';
 import { MAX_FRAGS, MIN_FRAGS } from '../constants/frags';
+import { ACTIONS } from './actions';
 
 export const CHARTYPES = {
     NONE: 'NONE',
@@ -22,6 +23,7 @@ export const MOVETYPES = {
     NONE: 0,
     STRAIGHT_LINE: 1,
     RANDOM_WALK: 2,
+    GOTO_SPOT: 3,
 }
 
 export const makeChar = (args) => ({
@@ -67,8 +69,13 @@ export const makeWorker = (args) => ({
     health: 75,
     damage: () => Math.random() * 10,
     range: 1,
-    moveType: MOVETYPES.STRAIGHT_LINE,
+    moveType: MOVETYPES.GOTO_SPOT,
     type: CHARTYPES.WORKER,
+    actions: {
+        rightClickOnLayer: ACTIONS.setMoveDestination.name,
+        rightClickOnFriendlyChar: ACTIONS.setMoveDestination.name,
+        rightClickOnEnemyChar: ACTIONS.setAttackTarget.name,
+    },
     ...args
 })
 

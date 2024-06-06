@@ -103,6 +103,26 @@ io.on('connection', (socket) => {
     unitRequests.addRequest(request)
   });
 
+  socket.on('request unit action', ({unit, action}) => {
+    console.log({ unit })
+    const { actionName, actionData } = action;
+    
+    console.log('actionName: ', actionName)
+    console.log({ actionData })
+
+    const request = {
+      verb: 'unitAction',
+      requester: user,
+      time: Date.now(),
+      data: {
+        ...action,
+        timeServerReceivedCreateUnitRequest: Date.now()
+      }
+    }
+    // console.log('request create unit', request)
+    unitRequests.addRequest(request)
+  })
+
   // when the client emits 'add user', this listens and executes
   socket.on('login', (username) => {
     //if (addedUser) return;

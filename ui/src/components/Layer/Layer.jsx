@@ -22,7 +22,7 @@ export const Layer = observer(({ zIndex=0, mapParams }) => {
   const interactiveIdArray = globalStore.interactive.idArray[getter]();
   const independentCharArray = Object.values(globalStore.independent.dict[getter]());
   // Access the socket from the Socket context
-  const { socket, requestCreateUnit } = useContext(SocketContext);
+  const { socket, requestCreateUnit, requestUnitAction } = useContext(SocketContext);
 
   const charMapParams = {
     width: mapParams.width - layerPadding * 2,
@@ -37,16 +37,17 @@ export const Layer = observer(({ zIndex=0, mapParams }) => {
         const layer = document.getElementById('layer');
         if (e.button === 2) {
           console.log('right click!')
-          e.preventDefault();
+          console.log({ requestUnitAction: requestUnitAction })
           
-          // globalStore.ui.performRightClickActionOnce({
-          //   layer,
-          //   worldCoordinates: mouseEventToWorldCoordinates(e, layer, viewport.pos.x.peek(), viewport.pos.y.peek()),
-          //   requestCreateUnit
-          // });
+          globalStore.ui.performLayerRightClickActionOnce({
+            layer,
+            worldCoordinates: mouseEventToWorldCoordinates(e, layer, viewport.pos.x.peek(), viewport.pos.y.peek()),
+            requestCreateUnit,
+            requestUnitAction
+          });
           // prevent context menu from coming up on right click
 
-
+          e.preventDefault();
           return;
         }
         console.log('leftclick!')
@@ -55,6 +56,7 @@ export const Layer = observer(({ zIndex=0, mapParams }) => {
           worldCoordinates: mouseEventToWorldCoordinates(e, layer, viewport.pos.x.peek(), viewport.pos.y.peek()),
           requestCreateUnit
         });
+        e.preventDefault();
       }}
   
       style={{
