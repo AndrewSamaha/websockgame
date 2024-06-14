@@ -116,6 +116,7 @@ io.on('connection', (socket) => {
       time: Date.now(),
       data: {
         ...action,
+        unit,
         timeServerReceivedCreateUnitRequest: Date.now()
       }
     }

@@ -70,11 +70,31 @@ const lookupUnitCost = (unitData) => {
           return;
       }
   
-      if (io) {
-        io.emit('new unit v2', unitData);
-        if (user) user.socket.emit('resource update', user.resources);
+      // if (io) {
+      //   io.emit('new unit v2', unitData);
+      //   if (user) user.socket.emit('resource update', user.resources);
+      // }
+      console.log({unitData})
+
+
+      const { actionName = 'createUnit' } = unitData;
+      
+      if (actionName === 'setMoveDestination') {
+        return;
       }
-      unitState.addUnit(unitData);
+
+      if (actionName === 'createUnit') {
+        if (io) {
+          io.emit('new unit v2', unitData);
+          if (user) user.socket.emit('resource update', user.resources);
+        }
+        unitState.addUnit(unitData);
+        return;
+      }
+
+      console.log('UnitRequest.doRequest: unknown actionName', actionName);
+      console.log({unitData})
+      
     }
   }
 
