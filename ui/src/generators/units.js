@@ -20,15 +20,15 @@ export const CHARTYPES = {
 }
 
 export const MOVETYPES = {
-    NONE: 0,
-    STRAIGHT_LINE: 1,
-    RANDOM_WALK: 2,
-    GOTO_SPOT: 3,
+    NONE: 'NONE',
+    STRAIGHT_LINE: 'STRAIGHT_LINE',
+    RANDOM_WALK: 'RANDOM_WALK',
 }
 
 export const makeChar = (args) => ({
     id: uuidv4(),
     pos: rndPos(),
+    maxSpeed: 0.05,
     timeCreatedOnClient: Date.now(),
     moves: false,
     history: {
@@ -38,6 +38,11 @@ export const makeChar = (args) => ({
     type: CHARTYPES.NONE,
     hoverable: true,
     animate,
+    actions: {
+        rightClickOnLayer: ACTIONS.none.name,
+        rightClickOnFriendlyChar: ACTIONS.none.name,
+        rightClickOnEnemyChar: ACTIONS.none.name,
+    },
     ...args
 });
 
@@ -69,7 +74,7 @@ export const makeWorker = (args) => ({
     health: 75,
     damage: () => Math.random() * 10,
     range: 1,
-    moveType: MOVETYPES.GOTO_SPOT,
+    moveType: MOVETYPES.STRAIGHT_LINE,
     type: CHARTYPES.WORKER,
     actions: {
         rightClickOnLayer: ACTIONS.setMoveDestination.name,

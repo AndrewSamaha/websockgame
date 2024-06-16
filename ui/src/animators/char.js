@@ -82,9 +82,9 @@ export const animate = (deltaTime, viewport, store, storeName, mapParams, id, re
   };
 
   switch (moveType) {
-    case MOVETYPES.GOTO_SPOT:
-      //newPosition = stepToIntermediateDestination({
-      break;
+    // case MOVETYPES.GOTO_SPOT:
+    //   //newPosition = stepToIntermediateDestination({
+    //   break;
     case MOVETYPES.RANDOM_WALK:
       newPosition = straightLineMove({
         x,

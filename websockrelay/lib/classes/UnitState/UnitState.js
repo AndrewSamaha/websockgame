@@ -3,8 +3,14 @@ const { v4: uuidv4 } = require('uuid');
 const { performance } = require('perf_hooks');
 
 const { straightLineMove } = require('../../helpers/physics');
+const { setFinalDestination, createNextDestination, atNextDestination, atFinalDestination } = require('../../helpers/navigation');
 
 const isProjectile = (unit) => unit.type === 'BULLET';
+
+const round = (num, places=2) => {
+    const factor = 10 ** places;
+    return Math.round(num * factor) / factor;
+}
 
 class UnitState {
     constructor() {
@@ -37,10 +43,21 @@ class UnitState {
         this.projectiles.push(projectile);
     }
 
+
+
     addUnit(unit) {
         //console.log(`  adding ${unit.type} to unitState [${this.targets.length},${this.projectiles.length}]`)
         if (isProjectile(unit)) return this.addProjectile(unit);
         this.addTarget(unit);
+    }
+
+    setMoveDestination(unit, moveDestination) {
+        const foundUnit = this.targets.find(t => t.id === unit.id);
+        if (!foundUnit) {
+            console.log({setMoveDestination: `unit not found id===${unit.id}`})
+            return;
+        }
+        setFinalDestination(foundUnit, moveDestination);
     }
 
     getActiveProjectiles() {
@@ -85,10 +102,55 @@ class UnitState {
         });
     }
 
+    stopUnit(unit) {
+        unit.navigation = {
+            ...unit.navigation,
+            finalDestination: null,
+            nextDestination: null
+        }
+        unit.pos.speed = 0;
+    }
+
+    distanceToNextDestination(unit) {
+        if (!unit.navigation?.nextDestination) return '?';
+        const { x: x1, y: y1 } = unit.pos;
+        const { x: x2, y: y2 } = unit.navigation.nextDestination;
+        return round(Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2));
+    }
+
+    debugMove(unit, step=0) {
+        return;
+        if (unit.type === 'WORKER') {
+            console.log(`moveUnit(${step})   x=${round(unit.pos.x)} y=${round(unit.pos.y)} dist=${this.distanceToNextDestination(unit)} dir=${round(unit.pos.dir)} speed=${unit.pos.speed}`)
+        }
+    }
+
     moveUnit(unit, delta) {
+        
+        if (!unit.moves) return;
+        if (!unit.navigation?.nextDestination) {
+            const newPosition = straightLineMove({pos: unit.pos, delta});
+            unit.pos = newPosition;
+            this.debugMove(unit, 1);
+            return;
+        }
+        if (!unit.pos.speed) unit.pos.speed = unit.maxSpeed;
+
+        if (atFinalDestination(unit)) {
+            this.stopUnit(unit);
+            this.debugMove(unit, 2);
+            return;
+        }
+
+        if (atNextDestination(unit)) {
+            createNextDestination(unit);
+            this.debugMove(unit, 3);
+            return;
+        }
+
         const newPosition = straightLineMove({pos: unit.pos, delta});
         unit.pos = newPosition;
-        return;
+        this.debugMove(unit, 4)
     }
 
     ageUnits(collection) {
@@ -141,8 +203,19 @@ class UnitState {
         }
         if (this.lastTicTime) message['age'] = Date.now() - this.lastTicTime;
         io.emit('unitState', message);
-        console.log(`${this.tics} ${this.broadcasts} id=${message.broadcastId} units.length=${message.units.length}`)
+        //console.log(`${this.tics} ${this.broadcasts} id=${message.broadcastId} units.length=${message.units.length}`)
         //console.log(this.targets)
+    }
+
+    echoStatus() {
+        const status = {
+            time: Date.now(),
+            tics: this.tics,
+            broadcasts: this.broadcasts,
+            targets: this.targets.length,
+            projectiles: this.projectiles.length
+        }
+        console.log(JSON.stringify(status));
     }
 
     tic() {

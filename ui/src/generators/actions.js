@@ -1,4 +1,9 @@
 export const ACTIONS = {
+    none: {
+        name: 'none',
+        label: 'None',
+        initiate: () => {}
+    },
     setMoveDestination: {
         name: 'setMoveDestination',
         label: 'Move',
