@@ -13,8 +13,18 @@ export const animate = (deltaTime, viewport, store, storeName, mapParams, id, re
 
   if (!char) return;
   
-  const { pos, moves, moveType, maxAge, history, shoots, shotsPerSecond, type, lastFireTime, networkHistory } = char;
-  const {x, y, dir, speed} = pos; 
+  const { 
+    pos,
+    moves,
+    moveType,
+    maxAge,
+    history,
+    shoots,
+    shotsPerSecond,
+    type,
+    lastFireTime,
+    networkHistory } = char;
+  const { x, y, dir, speed, intermediateDestination } = pos; 
 
   // Age
   if (true && maxAge && networkHistory) {
@@ -72,6 +82,9 @@ export const animate = (deltaTime, viewport, store, storeName, mapParams, id, re
   };
 
   switch (moveType) {
+    // case MOVETYPES.GOTO_SPOT:
+    //   //newPosition = stepToIntermediateDestination({
+    //   break;
     case MOVETYPES.RANDOM_WALK:
       newPosition = straightLineMove({
         x,

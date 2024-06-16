@@ -4,6 +4,7 @@ import { animate } from '../animators/char';
 import { animate as animateFrag } from '../animators/frag';
 import { addChar } from '../state/chars';
 import { MAX_FRAGS, MIN_FRAGS } from '../constants/frags';
+import { ACTIONS } from './actions';
 
 export const CHARTYPES = {
     NONE: 'NONE',
@@ -19,14 +20,15 @@ export const CHARTYPES = {
 }
 
 export const MOVETYPES = {
-    NONE: 0,
-    STRAIGHT_LINE: 1,
-    RANDOM_WALK: 2,
+    NONE: 'NONE',
+    STRAIGHT_LINE: 'STRAIGHT_LINE',
+    RANDOM_WALK: 'RANDOM_WALK',
 }
 
 export const makeChar = (args) => ({
     id: uuidv4(),
     pos: rndPos(),
+    maxSpeed: 0.05,
     timeCreatedOnClient: Date.now(),
     moves: false,
     history: {
@@ -36,6 +38,11 @@ export const makeChar = (args) => ({
     type: CHARTYPES.NONE,
     hoverable: true,
     animate,
+    actions: {
+        rightClickOnLayer: ACTIONS.none.name,
+        rightClickOnFriendlyChar: ACTIONS.none.name,
+        rightClickOnEnemyChar: ACTIONS.none.name,
+    },
     ...args
 });
 
@@ -69,6 +76,11 @@ export const makeWorker = (args) => ({
     range: 1,
     moveType: MOVETYPES.STRAIGHT_LINE,
     type: CHARTYPES.WORKER,
+    actions: {
+        rightClickOnLayer: ACTIONS.setMoveDestination.name,
+        rightClickOnFriendlyChar: ACTIONS.setMoveDestination.name,
+        rightClickOnEnemyChar: ACTIONS.setAttackTarget.name,
+    },
     ...args
 })
 

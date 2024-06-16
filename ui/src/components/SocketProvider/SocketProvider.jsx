@@ -11,8 +11,10 @@ import { makeBullet } from '../../generators/units';
 import unitDictionary from '../../generators/unitDictionary';
 
 const createInitialSocketState = () => {
+    const hostname = window.location.hostname;
+    console.log('hostname', hostname);
 
-    const socket = io('http://localhost:3000', { autoConnect: false});
+    const socket = io(`http://${hostname}:3000`, { autoConnect: false});
 
     socket.on('authenticate yourself', () => {
         console.log('received authentication request from server');
@@ -129,6 +131,13 @@ const createInitialSocketState = () => {
             socket.emit('request create unit', {
                 ...unit,
                 timeCreateUnitRequest: Date.now()
+            });
+        },
+        requestUnitAction: (unit, action) => {
+            socket.emit('request unit action', {
+                unit,
+                action,
+                timeRequestUnitAction: Date.now()
             });
         },
         connectToServer: () => {
