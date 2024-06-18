@@ -78,7 +78,8 @@ export const GamePage = () => {
             flexDirection: 'row',
             justifyContent: 'flex-start',
             zIndex: `${layer.zIndex}`,
-            width: '100%'
+            width: '100%',
+            alignItems: 'flex-start',
           }} >
             <div id={'selectedIndicatorDiv'}
               style={{
@@ -87,7 +88,10 @@ export const GamePage = () => {
               justifyContent: 'flex-start',
               zIndex: `${layer.zIndex}`,
               width: '128px',
+              height: '662px',
               backgroundColor: 'rgba(100, 0, 0, 0.5)',
+              padding: `4px`,
+              margin: '4px',
             }}>
 
             </div>
