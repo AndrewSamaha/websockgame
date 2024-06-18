@@ -41,7 +41,7 @@ export const Console = (props) => {
             padding: '5px',
             backgroundColor: 'black',
             color: 'white',
-            width: `${GAME_SIZE.width}px`,
+            width: `${GAME_SIZE.width-10}px`,
             height: `${terminalHeight}px`,
             display: 'inline-block',
             overflow: 'auto',

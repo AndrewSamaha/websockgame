@@ -75,14 +75,34 @@ export const GamePage = () => {
         <div id={"gamepage"}
           style={{
             display: 'flex',
-            flexDirection: 'column',
+            flexDirection: 'row',
             justifyContent: 'flex-start',
             zIndex: `${layer.zIndex}`,
-            width: '800px'
+            width: '100%'
           }} >
-            <GlobalStatusBar />
-            <Layer zIndex={layer.zIndex} clickable={layer.clickable} mapParams={mapParams}/>
-            <Console />
+            <div id={'selectedIndicatorDiv'}
+              style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'flex-start',
+              zIndex: `${layer.zIndex}`,
+              width: '128px',
+              backgroundColor: 'rgba(100, 0, 0, 0.5)',
+            }}>
+
+            </div>
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'flex-start',
+              zIndex: `${layer.zIndex}`,
+              width: '800px'
+            }}>
+              <GlobalStatusBar />
+              <Layer zIndex={layer.zIndex} clickable={layer.clickable} mapParams={mapParams}/>
+              <Console />
+            </div>
+            
         </div>
     );
 };
