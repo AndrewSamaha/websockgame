@@ -81,7 +81,7 @@ export const GamePage = () => {
             width: '100%',
             alignItems: 'flex-start',
           }} >
-            <div id={'selectedIndicatorDiv'}
+            <div id={'leftHandColumn'}
               style={{
               display: 'flex',
               flexDirection: 'column',
@@ -89,11 +89,27 @@ export const GamePage = () => {
               zIndex: `${layer.zIndex}`,
               width: '128px',
               height: '662px',
-              backgroundColor: 'rgba(100, 0, 0, 0.5)',
-              padding: `4px`,
-              margin: '4px',
+              padding: `0px 4px 0px 0px`,
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
             }}>
+              <div id={'topLeftCorner'}
+                style={{
+                  backgroundColor: 'rgba(100, 100, 0, 1)',
+                  margin: '0px 0px 4px 0px',
+                  height: '100px',
+                  width: '100%'
+                }}>
 
+              </div>
+              <div id={'leftSideBar'}
+                style={{
+                  backgroundColor: 'rgba(100, 0, 100, 1)',
+                  // padding: `4px`,
+                  //padding: '4px',
+                  height: '562px',
+                  width: '100%'
+                }}>
+              </div>
             </div>
             <div style={{
               display: 'flex',
