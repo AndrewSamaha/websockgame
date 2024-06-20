@@ -3,4 +3,4 @@ export const GAME_SIZE = {
     height: 400
 };
 
-export const GAME_NAME = 'Retro Empire';
+export const GAME_NAME = 'Bit Wars';

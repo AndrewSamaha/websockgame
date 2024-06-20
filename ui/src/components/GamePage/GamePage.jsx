@@ -8,6 +8,8 @@ import { globalStore } from "../../state/globalStore";
 import { SocketContext } from "../SocketProvider/SocketProvider"; // Import the SocketContext
 import { GlobalStatusBar } from "./GlobalStatusBar/GlobalStatusBar";
 import { Console } from "./Console/Console";
+import { TopLeftCorner } from "./TopLeftCorner/TopLeftCorner";
+import { LeftSideBar } from "./LeftSideBar/LeftSideBar";
 
 import "./GamePage.css";
 
@@ -88,28 +90,13 @@ export const GamePage = () => {
               justifyContent: 'flex-start',
               zIndex: `${layer.zIndex}`,
               width: '128px',
-              height: '662px',
+              height: '668px',
+              margin: '5px 0px 0px 0px',
               padding: `0px 4px 0px 0px`,
               backgroundColor: 'rgba(0, 0, 0, 0.5)',
             }}>
-              <div id={'topLeftCorner'}
-                style={{
-                  backgroundColor: 'rgba(100, 100, 0, 1)',
-                  margin: '0px 0px 4px 0px',
-                  height: '100px',
-                  width: '100%'
-                }}>
-
-              </div>
-              <div id={'leftSideBar'}
-                style={{
-                  backgroundColor: 'rgba(100, 0, 100, 1)',
-                  // padding: `4px`,
-                  //padding: '4px',
-                  height: '562px',
-                  width: '100%'
-                }}>
-              </div>
+              <TopLeftCorner />
+              <LeftSideBar />
             </div>
             <div style={{
               display: 'flex',
