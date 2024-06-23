@@ -71,6 +71,22 @@ export const Char = observer(({ id, viewport }) => {
   const { pos, representation, type } = char;
   const { x, y, dir } = pos; 
 
+  if (!viewport) return (
+    <div
+      style={{
+        zIndex: 'inherit',
+        // display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        // 
+        height: '1em',
+        fontSize: '4em',
+        //transform: `rotate(${dir+3.142*1.5}rad)`,
+        color: 'white'}}>
+        {char.representation}
+    </div>
+  )
+
   return (
     <div
       style={{

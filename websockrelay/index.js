@@ -100,7 +100,12 @@ io.on('connection', (socket) => {
     
         console.log('actionName: ', actionName)
         console.log({ actionData })
-
+        console.log({ unitOwnerId: unit.owner.id, userId: user.id })
+        if (unit.owner.id !== user.id) {
+            console.log('unit owner id does not match user id')
+            return;
+        }
+        
         const request = {
             verb: 'unitAction',
             requester: user,

@@ -8,6 +8,8 @@ import { globalStore } from "../../state/globalStore";
 import { SocketContext } from "../SocketProvider/SocketProvider"; // Import the SocketContext
 import { GlobalStatusBar } from "./GlobalStatusBar/GlobalStatusBar";
 import { Console } from "./Console/Console";
+import { TopLeftCorner } from "./TopLeftCorner/TopLeftCorner";
+import { LeftSideBar } from "./LeftSideBar/LeftSideBar";
 
 import "./GamePage.css";
 
@@ -75,14 +77,39 @@ export const GamePage = () => {
         <div id={"gamepage"}
           style={{
             display: 'flex',
-            flexDirection: 'column',
+            flexDirection: 'row',
             justifyContent: 'flex-start',
             zIndex: `${layer.zIndex}`,
-            width: '800px'
+            width: '100%',
+            alignItems: 'flex-start',
           }} >
-            <GlobalStatusBar />
-            <Layer zIndex={layer.zIndex} clickable={layer.clickable} mapParams={mapParams}/>
-            <Console />
+            <div id={'leftHandColumn'}
+              style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'flex-start',
+              zIndex: `${layer.zIndex}`,
+              width: '128px',
+              height: '668px',
+              margin: '5px 0px 0px 0px',
+              padding: `0px 4px 0px 0px`,
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            }}>
+              <TopLeftCorner />
+              <LeftSideBar />
+            </div>
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'flex-start',
+              zIndex: `${layer.zIndex}`,
+              width: '800px'
+            }}>
+              <GlobalStatusBar />
+              <Layer zIndex={layer.zIndex} clickable={layer.clickable} mapParams={mapParams}/>
+              <Console />
+            </div>
+            
         </div>
     );
 };

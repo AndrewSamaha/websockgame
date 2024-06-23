@@ -17,6 +17,11 @@ export const CHARTYPES = {
     RESOURCE: 'RESOURCE',
     TOWER: 'TOWER',
     WORKER: 'WORKER',
+    LIBRARY: 'LIBRARY',
+    MAGE: 'MAGE',
+    GOLEM: 'GOLEM',
+    BARRACKS: 'BARRACKS',
+    FARM: 'FARM',
 }
 
 export const MOVETYPES = {
@@ -28,6 +33,8 @@ export const MOVETYPES = {
 export const makeChar = (args) => ({
     id: uuidv4(),
     pos: rndPos(),
+    maxHealth: 1,
+    health: 1,
     maxSpeed: 0.05,
     timeCreatedOnClient: Date.now(),
     moves: false,
@@ -68,7 +75,7 @@ export const makeBug = (args) => ({
 
 export const makeWorker = (args) => ({
     ...makeChar(),
-    representation: 'o',
+    representation: 'u',
     moves: true,
     maxHealth: 75,
     health: 75,
@@ -81,23 +88,28 @@ export const makeWorker = (args) => ({
         rightClickOnFriendlyChar: ACTIONS.setMoveDestination.name,
         rightClickOnEnemyChar: ACTIONS.setAttackTarget.name,
     },
+    builds: [
+        CHARTYPES.BASE,
+        CHARTYPES.TOWER
+    ],
     ...args
 })
 
 export const makeFighter = (args) => ({
     ...makeWorker(),
-    representation: 'A',
+    representation: 'a',
     moves: true,
     maxHealth: 200,
     health: 200,
     moveType: MOVETYPES.STRAIGHT_LINE,
     type: CHARTYPES.FIGHTER,
+    builds: [],
     ...args
 })
 
 export const makeArcher = (args) => ({
     ...makeFighter(),
-    representation: '@',
+    representation: 'e',
     moves: true,
     maxHealth: 150,
     health: 150,
@@ -106,6 +118,31 @@ export const makeArcher = (args) => ({
     range: 5,
     moveType: MOVETYPES.STRAIGHT_LINE,
     type: CHARTYPES.ARCHER,
+    ...args
+})
+
+export const makeMage = (args) => ({
+    ...makeArcher(),
+    representation: 'n',
+    moves: true,
+    maxHealth: 60,
+    health: 60,
+    shoots: true,
+    damage: () => Math.random() * 10,
+    range: 10,
+    moveType: MOVETYPES.STRAIGHT_LINE,
+    type: CHARTYPES.MAGE,
+    ...args
+})
+
+export const makeGolem = (args) => ({
+    ...makeFighter(),
+    representation: 'g',
+    moves: true,
+    maxHealth: 400,
+    health: 400,
+    moveType: MOVETYPES.STRAIGHT_LINE,
+    type: CHARTYPES.GOLEM,
     ...args
 })
 
@@ -122,6 +159,8 @@ export const makeBullet = (args) => ({
 
 export const makeBase = (args) => ({
     ...makeChar(),
+    maxHealth: 300,
+    health: 300,
     representation: '#',
     pos: {
       ...rndPos(),
@@ -130,11 +169,70 @@ export const makeBase = (args) => ({
     shoots: false,
     moves: false,
     type: CHARTYPES.BASE,
+    builds: [
+        CHARTYPES.WORKER,
+    ],
     ...args
 })
 
+export const makeFarm = (args) => ({
+    ...makeChar(),
+    maxHealth: 100,
+    health: 100,
+    representation: 'F',
+    pos: {
+      ...rndPos(),
+      dir: Math.PI*.5
+    },
+    shoots: false,
+    moves: false,
+    type: CHARTYPES.FARM,
+    ...args
+})
+
+export const makeLibrary = (args) => ({
+    ...makeChar(),
+    maxHealth: 100,
+    health: 100,
+    representation: 'L',
+    pos: {
+      ...rndPos(),
+      dir: Math.PI*.5
+    },
+    shoots: false,
+    moves: false,
+    type: CHARTYPES.LIBRARY,
+    builds: [
+        CHARTYPES.MAGE,
+        CHARTYPES.GOLEM
+    ],
+    ...args
+})
+
+export const makeBarracks = (args) => ({
+    ...makeChar(),
+    maxHealth: 200,
+    health: 200,
+    representation: 'B',
+    pos: {
+      ...rndPos(),
+      dir: Math.PI*.5
+    },
+    shoots: false,
+    moves: false,
+    type: CHARTYPES.BARRACKS,
+    builds: [
+        CHARTYPES.FIGHTER,
+        CHARTYPES.ARCHER
+    ],
+    ...args
+})
+
+
 export const makeTower = (args) => ({
     ...makeChar(),
+    maxHealth: 100,
+    health: 100,
     representation: 'T',
     pos: {
       ...rndPos(),

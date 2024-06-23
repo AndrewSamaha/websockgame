@@ -8,17 +8,20 @@ import {
 import { enableReactUse } from '@legendapp/state/config/enableReactUse';
 import { LandingPage } from './components/LandingPage/LandingPage';
 import { GamePage } from './components/GamePage/GamePage';
+import { GAME_NAME } from './constants/game';
 import './App.css'
 
 
 enableReactUse();
 
 function App() {
+  useEffect(() => {
+    document.title = GAME_NAME;
+  }, []);
+
   return (
     <Router>
       <div id={"router"}>
-        {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
         <Routes>
           <Route exact path="/" element={<LandingPage/>} />
           <Route exact path="/game" element={<GamePage/>} />
