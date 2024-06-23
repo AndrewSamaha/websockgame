@@ -155,14 +155,6 @@ export const LeftSideBar = () => {
             {belongsToPlayer && <hr />}
             {belongsToPlayer && <ActionsList actions={actions}/>}
             {belongsToPlayer && <BuildsList builds={builds}/>}
-            {/* <ColumnFiller /> */}
-            {/* <div style={{
-                flexGrow: 1,
-                // flexShrink: 0,
-                flexBasis: 'auto'
-            }}>
-
-            </div> */}
         </div>
     );
 }
