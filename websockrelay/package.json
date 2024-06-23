@@ -14,13 +14,15 @@
     "victor": "^1.1.0"
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "devDependencies": {
     "eslint": "^9.4.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
     "globals": "^15.4.0",
+    "nodemon": "^3.1.4",
     "prettier": "^3.3.2"
   }
 }
