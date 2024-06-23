@@ -73,12 +73,11 @@ export const ActionsList = ({ actions }) => {
         <div style={{
             padding: '0px',
             margin: '0px',
-            // height: '100%',
             justifyContent: 'flex-start',
-            backgroundColor: 'black'
+            height: 'auto'
         }}>
             actions
-            <div style={{fontSize: '.6em', height: '100%', justifyContent: 'flex-start', alignItems: 'flex-start'}}>
+            <div style={{fontSize: '.6em', height: '100%', justifyContent: 'flex-start', }}>
                 {uniq(Object.values(actions)).map((actionName) => <span style={{justifyContent: 'flex-start'}}>{mapActionToUIText(actionName)}</span>)}
             </div>
         </div>
@@ -97,33 +96,19 @@ export const BuildsList = ({ builds }) => {
         <div id={'buildListParent'} style={{
             padding: '0px',
             margin: '0px',
-            // height: '100%',
             justifyContent: 'flex-start',
-            alignItems: 'flex-start',
-            backgroundColor: 'blue',
-            display: 'flex',
-            flexDirection: 'column',
-            // flexGrow: 0,
-            // flexShrink: 1
+            height: 'auto'
         }}>
             builds
             <div id={'buildListContainer'} style={{
                 fontSize: '.6em',
-                // height: '100%',
+                height: 'auto',
                 justifyContent: 'flex-start',
                 alignItems: 'flex-start',
-                display: 'flex',
-                flexDirection: 'column',
-                // overflow: 'auto',
-                // flexGrow: 0,
-                // flexShrink: 1,
-                backgroundColor: 'indigo',
-                maxHeight: '90vh',
-                overflowY: 'auto',
+                flexShrink: 1
                 }}>
                 {uniq(builds).map((build, idx) => <span id={'buildListItem'} key={`build-${idx}`} style={{
                         flexShrink: 1,
-                        backgroundColor: getRandomColor()
                     }}>{build}</span>)}
             </div>
         </div>
@@ -147,6 +132,7 @@ export const LeftSideBar = () => {
             height: '580px',
             width: '100%',
             justifyContent: 'flex-start',
+            overflowY: 'hidden'
           }}>
             <style>
                 {`
@@ -169,13 +155,14 @@ export const LeftSideBar = () => {
             {belongsToPlayer && <hr />}
             {belongsToPlayer && <ActionsList actions={actions}/>}
             {belongsToPlayer && <BuildsList builds={builds}/>}
-            <div style={{
+            {/* <ColumnFiller /> */}
+            {/* <div style={{
                 flexGrow: 1,
                 // flexShrink: 0,
                 flexBasis: 'auto'
             }}>
 
-            </div>
+            </div> */}
         </div>
     );
 }
