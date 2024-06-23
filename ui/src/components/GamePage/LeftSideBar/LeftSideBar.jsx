@@ -2,11 +2,11 @@ import React from "react";
 import { Char } from "../../Layer/Char/Char";
 import { globalStore } from "../../../state/globalStore";
 import uniq from "lodash/uniq";
-import compact from "lodash/compact";
+import { ACTIONS } from "../../../generators/actions";
 
 export const NoCharacterSelected = () => {
     return (
-        <pre>No character selected</pre>
+        <></>
     );
 }
 
@@ -25,14 +25,8 @@ function healthToColor(ratio) {
 }
 
 const mapActionToUIText = (action) => {
-    switch (action) {
-        case 'setAttackTarget':
-            return 'Attack';
-        case 'setMoveDestination':
-            return 'Move';
-        default:
-            return action;
-    }
+    if (ACTIONS[action]) return ACTIONS[action].label;
+    return `unknown action: ${action}`;
 }
 
 export const HealthBar = ({ health, maxHealth }) => {
@@ -79,8 +73,9 @@ export const ActionsList = ({ actions }) => {
         <div style={{
             padding: '0px',
             margin: '0px',
-            height: '100%',
-            justifyContent: 'flex-start'
+            // height: '100%',
+            justifyContent: 'flex-start',
+            backgroundColor: 'black'
         }}>
             actions
             <div style={{fontSize: '.6em', height: '100%', justifyContent: 'flex-start', alignItems: 'flex-start'}}>
@@ -90,20 +85,68 @@ export const ActionsList = ({ actions }) => {
     );
 }
 
+const getRandomColor = () => {
+    const r = Math.floor(Math.random() * 255);
+    const g = Math.floor(Math.random() * 255);
+    const b = Math.floor(Math.random() * 255);
+    return `rgba(${r}, ${g}, ${b}, 1)`;
+}
+
+export const BuildsList = ({ builds }) => {
+    return (
+        <div id={'buildListParent'} style={{
+            padding: '0px',
+            margin: '0px',
+            // height: '100%',
+            justifyContent: 'flex-start',
+            alignItems: 'flex-start',
+            backgroundColor: 'blue',
+            display: 'flex',
+            flexDirection: 'column',
+            // flexGrow: 0,
+            // flexShrink: 1
+        }}>
+            builds
+            <div id={'buildListContainer'} style={{
+                fontSize: '.6em',
+                // height: '100%',
+                justifyContent: 'flex-start',
+                alignItems: 'flex-start',
+                display: 'flex',
+                flexDirection: 'column',
+                // overflow: 'auto',
+                // flexGrow: 0,
+                // flexShrink: 1,
+                backgroundColor: 'indigo',
+                maxHeight: '90vh',
+                overflowY: 'auto',
+                }}>
+                {uniq(builds).map((build, idx) => <span id={'buildListItem'} key={`build-${idx}`} style={{
+                        flexShrink: 1,
+                        backgroundColor: getRandomColor()
+                    }}>{build}</span>)}
+            </div>
+        </div>
+    );
+}
+
 export const LeftSideBar = () => {
     globalStore.ui.selected_char.use();
     const selectedChar = globalStore.ui.selected_char.get();
     if (!selectedChar) return <NoCharacterSelected />;
-    const { networkHistory, id, type, health, maxHealth, owner, actions } = selectedChar;
+    const { networkHistory, id, type, health, builds, maxHealth, owner, actions } = selectedChar;
     const belongsToPlayer = owner.id === globalStore.user.id.get();
     const backgroundColor = belongsToPlayer ? 'rgba(0, 100, 0, 1)' : owner.username === 'server' ? 'rgba(100, 100, 100, .4)' : 'rgba(100, 0, 0, 1)';
     return (
         <div id={'leftSideBar'}
           style={{
+            display: 'flex',
+            flexDirection: 'column',
+            // alignItems: 'flex-start',
             backgroundColor,
             height: '580px',
             width: '100%',
-            justifyContent: 'flex-start'
+            justifyContent: 'flex-start',
           }}>
             <style>
                 {`
@@ -123,10 +166,16 @@ export const LeftSideBar = () => {
             {type}
             <HealthBar health={health} maxHealth={maxHealth} />
             <OwnerBar owner={owner} belongsToPlayer={belongsToPlayer} />
-            {belongsToPlayer && (<>
-                <hr/>
-                <ActionsList actions={actions}/>
-                </>)}
+            {belongsToPlayer && <hr />}
+            {belongsToPlayer && <ActionsList actions={actions}/>}
+            {belongsToPlayer && <BuildsList builds={builds}/>}
+            <div style={{
+                flexGrow: 1,
+                // flexShrink: 0,
+                flexBasis: 'auto'
+            }}>
+
+            </div>
         </div>
     );
 }

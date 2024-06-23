@@ -81,6 +81,10 @@ export const makeWorker = (args) => ({
         rightClickOnFriendlyChar: ACTIONS.setMoveDestination.name,
         rightClickOnEnemyChar: ACTIONS.setAttackTarget.name,
     },
+    builds: [
+        CHARTYPES.BASE,
+        CHARTYPES.TOWER
+    ],
     ...args
 })
 
@@ -130,6 +134,11 @@ export const makeBase = (args) => ({
     shoots: false,
     moves: false,
     type: CHARTYPES.BASE,
+    builds: [
+        CHARTYPES.WORKER,
+        CHARTYPES.FIGHTER,
+        CHARTYPES.ARCHER
+    ],
     ...args
 })
 
