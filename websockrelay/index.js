@@ -121,12 +121,13 @@ io.on('connection', (socket) => {
     })
 
     // when the client emits 'add user', this listens and executes
-    socket.on('login', (username) => {
+    socket.on('login', (userFromClient) => {
     //if (addedUser) return;
-
+        const { username, color } = userFromClient;
         // we store the username in the socket session for this client
         socket.username = username;
         user.setUserName(username);
+        user.setUserColor(color);
         user.loadState();
 
         ++numUsers;
@@ -151,7 +152,7 @@ io.on('connection', (socket) => {
         socket.broadcast.emit('user joined', userJoinedObj);
   
         console.log('adding user', user.username)
-    // console.log(user)
+        console.log(user)
     });
 
     socket.on('user command', (command) => {
@@ -183,7 +184,7 @@ io.on('connection', (socket) => {
         if (addedUser) {
             --numUsers;
             userList.removeUser(user);
-
+            console.log('user disconnected', user.username)
             // echo globally that this client has left
             socket.broadcast.emit('user left', {
                 username: socket.username,

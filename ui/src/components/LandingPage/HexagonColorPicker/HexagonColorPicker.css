@@ -1,0 +1,37 @@
+.hexagon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 180px;
+    height: 120px;
+    padding: 0 0 20px 0;
+    
+  }
+  
+  .large-hexagon {
+    position: relative;
+    width: 180px;
+    height: 120px;
+  }
+  
+  .hexagon {
+    position: absolute;
+    width: 50px;
+    height: 43px;
+    clip-path: polygon(25% 6%, 75% 6%, 100% 50%, 75% 94%, 25% 94%, 0% 50%);
+    transition: background-color 0.2s, border 0.2s;
+  }
+  
+  .hexagon.selectable {
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  
+  .hexagon.selectable:hover {
+    transform: scale(1.1);
+  }
+  
+  .hexagon.dim {
+    opacity: 0.5;
+  }
+  

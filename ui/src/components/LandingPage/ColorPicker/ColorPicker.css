@@ -1,0 +1,41 @@
+.hexagon-container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 200px;
+  }
+  
+  .hexagon {
+    position: relative;
+    width: 50px;
+    height: 43px;
+    background-color: black;
+    margin: 2px;
+    clip-path: polygon(25% 6%, 75% 6%, 100% 50%, 75% 94%, 25% 94%, 0% 50%);
+  }
+  
+  .hexagon.selectable {
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  
+  .hexagon.selectable:hover {
+    transform: scale(1.1);
+  }
+  
+  .tooltip {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    display: none;
+    white-space: nowrap;
+  }
+  
+  .hexagon.selectable:hover .tooltip {
+    display: block;
+  }
+  

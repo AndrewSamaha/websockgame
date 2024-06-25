@@ -57,7 +57,8 @@ export const globalStore = observable({
     user: {
       username: '',
       id: '',
-      loggedIn: false
+      loggedIn: false,
+      color: null
     },
     ui: {
       dynamicFunctions: {

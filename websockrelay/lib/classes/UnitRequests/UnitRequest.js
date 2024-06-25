@@ -50,7 +50,8 @@ class UnitRequest {
             ...this.request.data,
             owner: {
                 username: this.request.requester.username,
-                id: this.request.requester.id
+                id: this.request.requester.id,
+                color: this.request.requester.color
             }
         }
         if (unitData.type !== 'BULLET') {

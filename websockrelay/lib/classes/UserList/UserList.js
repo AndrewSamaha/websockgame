@@ -9,10 +9,15 @@ class User {
         }
         this.id = uuidv4();
         this.requests = [];
+        this.color = null;
     }
 
     setUserName(username) {
         this.username = username;
+    }
+
+    setUserColor(color) {
+        this.color = color;
     }
 
     loadState() {
@@ -27,7 +32,8 @@ class User {
         return {
             username: this.username,
             id: this.id,
-            resources: this.resources
+            resources: this.resources,
+            color: this.color
         }
     }
 }

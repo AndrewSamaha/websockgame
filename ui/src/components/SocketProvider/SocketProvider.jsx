@@ -22,7 +22,7 @@ const createInitialSocketState = () => {
         console.log('heres what we have in the globalStore user')
         console.log(user)
         console.log('logging in with username:', user.username)
-        socket.emit('login', user.username);
+        socket.emit('login', user);
     });
 
     socket.on('loginSuccessful', (data) => {

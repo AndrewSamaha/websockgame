@@ -9,11 +9,18 @@ import { styles  } from '../../../styles/styles';
 
 const CHAR_SIZE = 20;
 
+const intToHex = (i) => {
+  const hex = i.toString(16);
+  return hex.length === 1 ? `0${hex}` : hex;
+}
+
 const ColorBubble = ({ children, char }) => {
+  
+  const belongsToPlayer = char.owner.id === globalStore.user.id.get();
   const [hover, setHover] = useState(false);
 
   const { type } = char;
-  const bubbleOpacity = 0.2;
+  const bubbleOpacity = intToHex(0.2 * 255);
   const bubbleSize = CHAR_SIZE;
   const top = -bubbleSize/2;
   const left = -bubbleSize/2;
@@ -22,15 +29,8 @@ const ColorBubble = ({ children, char }) => {
   const BLUE = `rgba(0, 0, 255, ${bubbleOpacity})`;
 
   const getColor = (type) => {
-    switch (type) {
-      case 'TOWER':
-      case 'BULLET':
-        return GREEN;
-      case 'BUG':
-        return RED;
-      default:
-        return 'black';
-    }
+    if (char.owner.username === 'server') return '';
+    return `${char.owner.color}${bubbleOpacity}` || 'pink';
   }
   
   return (
