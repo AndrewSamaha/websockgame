@@ -10,6 +10,11 @@ export const LandingPage = () => {
     globalStore.user.use();
     const [inputUserName, setInputUsername] = useState('');
     const { socket, requestCreateUnit, connectToServer } = useContext(SocketContext);
+    // get the result of localhost:3000/availableColors
+    // const { data: availableColors } = useQuery('availableColors', async () => {
+    //     const response = await fetch('http://localhost:3000/availableColors');
+    //     return response.json();
+    // });
 
     const user = globalStore.user.get();
     const { username, loggedIn, id } = user;
