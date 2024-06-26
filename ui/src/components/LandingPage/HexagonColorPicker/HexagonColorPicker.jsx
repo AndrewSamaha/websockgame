@@ -6,13 +6,14 @@ import './HexagonColorPicker.css';
 
 
 const fetchAvailableColors = async () => {
+    console.log('calling fetchAvailableColors')
     const response = await fetch(`${getHost()}/availableColors`);
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
     return response.json();
 };
-const HexagonColorPicker = () => {
+const HexagonColorPicker = ({setSelectedColor}) => {
     const [hoveredIndex, setHoveredIndex] = useState(null);
     const { data: availableColors, isLoading, error } = useQuery('availableColors', fetchAvailableColors);
 
@@ -60,6 +61,7 @@ const HexagonColorPicker = () => {
             }}
             onClick={() => {
                 globalStore.user.color.set(color);
+                setSelectedColor(color);
                 setHoveredIndex(index)
             }}
             // onClick={() => setHoveredIndex(null)}

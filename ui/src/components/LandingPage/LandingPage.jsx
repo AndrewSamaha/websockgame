@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { globalStore } from "../../state/globalStore";
 import { Link } from "react-router-dom";
 import { SocketContext } from "../SocketProvider/SocketProvider";
@@ -9,12 +9,17 @@ import "./LandingPage.css";
 export const LandingPage = () => {
     globalStore.user.use();
     const [inputUserName, setInputUsername] = useState('');
+    const [selectedColor, setSelectedColor] = useState('');
+    const [loginEnabled, setLoginEnabled] = useState(false);
+
     const { socket, requestCreateUnit, connectToServer } = useContext(SocketContext);
-    // get the result of localhost:3000/availableColors
-    // const { data: availableColors } = useQuery('availableColors', async () => {
-    //     const response = await fetch('http://localhost:3000/availableColors');
-    //     return response.json();
-    // });
+    useEffect(() => {
+        if (inputUserName.length > 0 && selectedColor.length > 0) {
+            setLoginEnabled(true);
+        } else {
+            setLoginEnabled(false);
+        }
+    }, [inputUserName, selectedColor]);
 
     const user = globalStore.user.get();
     const { username, loggedIn, id } = user;
@@ -35,17 +40,14 @@ export const LandingPage = () => {
             </div>
         );
     }
-    const availableColors = [
-        '#ff0000',
-        '#ff8000',
-        '#ffff00',
-        '#00ff00',
-        '#00bfff',
-        '#4000ff',
-        '#00ffff',
-        '#ff00ff',
-    ];
-    
+
+    const buttonStyle = {
+        backgroundColor: loginEnabled ? 'blue' : 'gray',
+        color: 'white',
+        cursor: loginEnabled ? 'pointer' : 'not-allowed',
+        opacity: loginEnabled ? 1 : 0.5,
+      };
+
     return (
         <div style={{height: 'auto'}}>
             <h1>{GAME_NAME}</h1>
@@ -56,8 +58,8 @@ export const LandingPage = () => {
                 onChange={(e) => setInputUsername(e.target.value)} 
             />
             <h3>Choose a color:</h3>
-            <HexagonColorPicker colors={availableColors} />
-            <button onClick={handleLogin}>Login</button>
+            <HexagonColorPicker setSelectedColor={setSelectedColor} />
+            <button onClick={handleLogin} disabled={!loginEnabled} style={buttonStyle} >Login</button>
         </div>
     );
 };

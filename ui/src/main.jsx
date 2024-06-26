@@ -5,14 +5,14 @@ import './index.css'
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { SocketProvider } from './components/SocketProvider/SocketProvider';
 
+const queryClient = new QueryClient();
+
 ReactDOM.createRoot(document.getElementById('root')).render(
-  // <App />
   <React.StrictMode>
     <SocketProvider>
-        <QueryClientProvider client={new QueryClient()}>
+        <QueryClientProvider client={queryClient}>
           <App />
         </QueryClientProvider>
-      <App />
     </SocketProvider>
   </React.StrictMode>,
 )
