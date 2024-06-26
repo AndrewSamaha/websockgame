@@ -12,6 +12,7 @@ const UnitState = require('./lib/classes/UnitState/UnitState.js');
 const { makeBullet } = require('./lib/generators/bullet.js');
 const { makeBug } = require('./lib/generators/bug.js');
 const { makeResource } = require('./lib/generators/resource.js');
+const { PLAYER_COLORS } = require('./lib/constants/playerColors.js');
 
 const io = require('socket.io')(server, {
     cors: {
@@ -20,11 +21,36 @@ const io = require('socket.io')(server, {
     }
 });
 
-app.use(cors());
-
-
-
+let numUsers = 0;
 const port = process.env.PORT || 3000;
+
+const unitState = new UnitState();
+const userList = new UserList();
+const crons = new Crons({ io, unitState, useSetImmediate: true });
+const unitRequests = new UnitRequests({ io, unitState, userList });
+
+app.use(cors());
+app.use((req, res, next) => {
+    req = {
+        ...req,
+        unitState,
+        userList,
+        crons,
+        unitRequests
+    };
+    next();
+})
+
+app.get('/availableColors', (req, res) => {
+    let availableColors = userList.users.reduce((acc, user) => {
+        acc.splice(acc.indexOf(user.color), 1);
+        return acc;
+    }, [...PLAYER_COLORS])
+    res.json(availableColors);
+});
+
+
+
 
 
 server.listen(port, () => {
@@ -33,12 +59,7 @@ server.listen(port, () => {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-let numUsers = 0;
 
-const unitState = new UnitState();
-const userList = new UserList();
-const crons = new Crons({ io, unitState, useSetImmediate: true });
-const unitRequests = new UnitRequests({ io, unitState, userList });
 
 unitState.attachIO(io);
 

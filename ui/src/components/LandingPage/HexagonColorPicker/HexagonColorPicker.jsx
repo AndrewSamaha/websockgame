@@ -1,12 +1,34 @@
 import React, { useState } from 'react';
+import { useQuery } from "react-query";
+import { getHost } from '../../../helpers/host';
 import { globalStore } from '../../../state/globalStore';
 import './HexagonColorPicker.css';
 
-const HexagonColorPicker = ({ colors }) => {
-  const [hoveredIndex, setHoveredIndex] = useState(null);
+
+const fetchAvailableColors = async () => {
+    console.log('calling fetchAvailableColors')
+    const response = await fetch(`${getHost()}/availableColors`);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json();
+};
+const HexagonColorPicker = ({setSelectedColor}) => {
+    const [hoveredIndex, setHoveredIndex] = useState(null);
+    const { data: availableColors, isLoading, error } = useQuery('availableColors', fetchAvailableColors);
+
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>Error: {error.message}</div>;
+    }
+
+  
 
   const hexagonColors = Array(7).fill(null);
-  colors.forEach((color, index) => {
+  availableColors.forEach((color, index) => {
     hexagonColors[index] = color;
   });
 
@@ -39,6 +61,7 @@ const HexagonColorPicker = ({ colors }) => {
             }}
             onClick={() => {
                 globalStore.user.color.set(color);
+                setSelectedColor(color);
                 setHoveredIndex(index)
             }}
             // onClick={() => setHoveredIndex(null)}
