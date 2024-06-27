@@ -4,6 +4,7 @@ const { performance } = require('perf_hooks');
 
 const { straightLineMove } = require('../../helpers/physics');
 const { setFinalDestination, createNextDestination, atNextDestination, atFinalDestination } = require('../../helpers/navigation');
+const { makeResource } = require('../../generators/resource');
 
 const isProjectile = (unit) => unit.type === 'BULLET';
 
@@ -203,8 +204,6 @@ class UnitState {
         }
         if (this.lastTicTime) message['age'] = Date.now() - this.lastTicTime;
         io.emit('unitState', message);
-        //console.log(`${this.tics} ${this.broadcasts} id=${message.broadcastId} units.length=${message.units.length}`)
-        //console.log(this.targets)
     }
 
     echoStatus() {
@@ -216,6 +215,22 @@ class UnitState {
             projectiles: this.projectiles.length
         }
         console.log(JSON.stringify(status));
+    }
+
+    reset() {
+        this.targets = [];
+        this.projectiles = [];
+        
+        for (let i = 0; i < 10; i++) {
+            const resource = makeResource();
+            resource.owner = {
+                username: 'server',
+                id: 'server'
+            }
+            console.log(`resource at ${resource.pos.x},${resource.pos.y}`)
+            this.addUnit(resource);
+        }
+        console.log('unitState reset')
     }
 
     tic() {

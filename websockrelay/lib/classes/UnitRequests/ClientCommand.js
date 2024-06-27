@@ -43,8 +43,16 @@ class ClientCommand extends UnitRequest {
         who: {
             description: 'show who is online',
             action: (context, request) => {
-                const { userList } = context;
+                const { userList, unitState } = context;
                 return userList.users.map(u => u.username).join(', ');
+            }
+        },
+        reset_game_state: {
+            description: 'reset the game state',
+            action: (context, request) => {
+                const { unitState } = context;
+                unitState.reset();
+                return 'game state reset!';
             }
         }
     }
