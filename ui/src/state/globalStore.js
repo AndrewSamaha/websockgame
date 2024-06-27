@@ -62,8 +62,8 @@ export const globalStore = observable({
     },
     ui: {
         dynamicFunctions: {
-            leftClickAction: () => {},
-            rightClickAction: () => {}
+            leftClickAction: (_) => {},
+            rightClickAction: (_) => {}
         },
         performLayerLeftClickActionOnce: (args) => {
             const { leftClickAction } = globalStore.ui.dynamicFunctions.peek();
