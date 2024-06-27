@@ -78,7 +78,14 @@ export const ActionsList = ({ actions }) => {
         }}>
             actions
             <div style={{fontSize: '.6em', height: '100%', justifyContent: 'flex-start', }}>
-                {uniq(Object.values(actions)).map((actionName, idx) => <span key={`actionlistItem${idx}`} style={{justifyContent: 'flex-start'}}>{mapActionToUIText(actionName)}</span>)}
+                {
+                    uniq(Object.values(actions)).map((actionName, idx) => 
+                        <span
+                            key={`actionlistItem${idx}`}
+                            style={{ justifyContent: 'flex-start' }}>
+                            {mapActionToUIText(actionName)}
+                        </span>)
+                }
             </div>
         </div>
     );
@@ -107,9 +114,15 @@ export const BuildsList = ({ builds }) => {
                 alignItems: 'flex-start',
                 flexShrink: 1
             }}>
-                {uniq(builds).map((build, idx) => <span id={'buildListItem'} key={`build-${idx}`} style={{
-                    flexShrink: 1,
-                }}>{build}</span>)}
+                {
+                    uniq(builds).map((build, idx) =>
+                        <span
+                            id={'buildListItem'}
+                            key={`build-${idx}`}
+                            style={{flexShrink: 1}}>
+                            {build}
+                        </span>)
+                }
             </div>
         </div>
     );
