@@ -36,16 +36,16 @@ export const Console = (props) => {
 
     return (
         <div className="container"
-        style={{
-            marginTop: '5px',
-            padding: '5px',
-            backgroundColor: 'black',
-            color: 'white',
-            width: `${GAME_SIZE.width-10}px`,
-            height: `${terminalHeight}px`,
-            display: 'inline-block',
-            overflow: 'auto',
-        }}
+            style={{
+                marginTop: '5px',
+                padding: '5px',
+                backgroundColor: 'black',
+                color: 'white',
+                width: `${GAME_SIZE.width-10}px`,
+                height: `${terminalHeight}px`,
+                display: 'inline-block',
+                overflow: 'auto',
+            }}
         >
             { globalStore.console.buffer.map((line, index) => (<TextLine key={index}>{line}</TextLine>))}
             <input 
@@ -62,11 +62,11 @@ export const Console = (props) => {
                 autoComplete='off'
                 ref={endRef}
                 onKeyDown={(event) => {
-                if (event.key === 'Enter') {
-                    event.preventDefault(); // prevent the form from being submitted
-                    handleInput(event.target.value);
-                    event.target.value = ''; // clear the input field
-                } 
+                    if (event.key === 'Enter') {
+                        event.preventDefault(); // prevent the form from being submitted
+                        handleInput(event.target.value);
+                        event.target.value = ''; // clear the input field
+                    } 
                 }}/>
             
             

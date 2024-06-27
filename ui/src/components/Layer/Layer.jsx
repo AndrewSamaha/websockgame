@@ -17,113 +17,113 @@ const PEEK = false;
 const getter = PEEK ? 'peek' : 'get';
 
 export const Layer = observer(({ zIndex=0, mapParams }) => {
-  globalStore.viewport.use();
-  const viewport = globalStore.viewport;
-  const interactiveIdArray = globalStore.interactive.idArray[getter]();
-  const independentCharArray = Object.values(globalStore.independent.dict[getter]());
-  // Access the socket from the Socket context
-  const { socket, requestCreateUnit, requestUnitAction } = useContext(SocketContext);
+    globalStore.viewport.use();
+    const viewport = globalStore.viewport;
+    const interactiveIdArray = globalStore.interactive.idArray[getter]();
+    const independentCharArray = Object.values(globalStore.independent.dict[getter]());
+    // Access the socket from the Socket context
+    const { socket, requestCreateUnit, requestUnitAction } = useContext(SocketContext);
 
-  const charMapParams = {
-    width: mapParams.width - layerPadding * 2,
-    height: mapParams.height - layerPadding * 2
-  }
+    const charMapParams = {
+        width: mapParams.width - layerPadding * 2,
+        height: mapParams.height - layerPadding * 2
+    }
   
-  return (
-    <div
-      id={"layer"}
-      onContextMenu={(e)=> e.preventDefault()}
-      onMouseDown={(e) => {
-        const layer = document.getElementById('layer');
-        if (e.button === 2) {
-          console.log('right click!')
-          console.log({ requestUnitAction: requestUnitAction })
+    return (
+        <div
+            id={"layer"}
+            onContextMenu={(e)=> e.preventDefault()}
+            onMouseDown={(e) => {
+                const layer = document.getElementById('layer');
+                if (e.button === 2) {
+                    console.log('right click!')
+                    console.log({ requestUnitAction: requestUnitAction })
           
-          globalStore.ui.performLayerRightClickActionOnce({
-            layer,
-            worldCoordinates: mouseEventToWorldCoordinates(e, layer, viewport.pos.x.peek(), viewport.pos.y.peek()),
-            requestCreateUnit,
-            requestUnitAction
-          });
-          // prevent context menu from coming up on right click
+                    globalStore.ui.performLayerRightClickActionOnce({
+                        layer,
+                        worldCoordinates: mouseEventToWorldCoordinates(e, layer, viewport.pos.x.peek(), viewport.pos.y.peek()),
+                        requestCreateUnit,
+                        requestUnitAction
+                    });
+                    // prevent context menu from coming up on right click
 
-          e.preventDefault();
-          return;
-        }
-        console.log('leftclick!')
-        globalStore.ui.performLayerLeftClickActionOnce({
-          layer,
-          worldCoordinates: mouseEventToWorldCoordinates(e, layer, viewport.pos.x.peek(), viewport.pos.y.peek()),
-          requestCreateUnit
-        });
-        e.preventDefault();
-      }}
+                    e.preventDefault();
+                    return;
+                }
+                console.log('leftclick!')
+                globalStore.ui.performLayerLeftClickActionOnce({
+                    layer,
+                    worldCoordinates: mouseEventToWorldCoordinates(e, layer, viewport.pos.x.peek(), viewport.pos.y.peek()),
+                    requestCreateUnit
+                });
+                e.preventDefault();
+            }}
   
-      style={{
-        position: 'relative',
-        zIndex: zIndex,
-        backgroundColor: 'black', 
-        border: '2px',
-        borderColor: 'black',
-        boxSizing: 'border-box',
-        width: `${mapParams.width}px`,
-        height: `${mapParams.height}px`,
-        padding: `${layerPadding}px`,
-        margin: '0',
-        overflow: 'hidden'
-        }}>
-          <Background viewport={viewport} />
+            style={{
+                position: 'relative',
+                zIndex: zIndex,
+                backgroundColor: 'black', 
+                border: '2px',
+                borderColor: 'black',
+                boxSizing: 'border-box',
+                width: `${mapParams.width}px`,
+                height: `${mapParams.height}px`,
+                padding: `${layerPadding}px`,
+                margin: '0',
+                overflow: 'hidden'
+            }}>
+            <Background viewport={viewport} />
           
-          {
+            {
             
-            independentCharArray.map((char) => {
-              if (char.type === CHARTYPES.FRAG) {
-                return (<Frag
-                    key={`${char.id}`}
-                    id={char.id}
-                    mapParams={charMapParams}
-                    storeName={'independent'}
-                    viewport={viewport}
-                  />)
-              } else {
-                return (  
-                  <Char
-                    key={`${char.id}`}
-                    id={char.id}
-                    mapParams={charMapParams}
-                    storeName={'independent'}
-                    viewport={viewport}
-                  />
+                independentCharArray.map((char) => {
+                    if (char.type === CHARTYPES.FRAG) {
+                        return (<Frag
+                            key={`${char.id}`}
+                            id={char.id}
+                            mapParams={charMapParams}
+                            storeName={'independent'}
+                            viewport={viewport}
+                        />)
+                    } else {
+                        return (  
+                            <Char
+                                key={`${char.id}`}
+                                id={char.id}
+                                mapParams={charMapParams}
+                                storeName={'independent'}
+                                viewport={viewport}
+                            />
                 
-                )
-              }
-            })
-          }
+                        )
+                    }
+                })
+            }
           
-          {
-              interactiveIdArray.map((charId) => {
-                return (                  
-                    <Char
-                      key={`${charId}`}
-                      id={charId}
-                      mapParams={charMapParams}
-                      storeName={'interactive'}
-                      viewport={viewport}
-                    />
+            {
+                interactiveIdArray.map((charId) => {
+                    return (                  
+                        <Char
+                            key={`${charId}`}
+                            id={charId}
+                            mapParams={charMapParams}
+                            storeName={'interactive'}
+                            viewport={viewport}
+                        />
                   
-              )})
-          }
+                    )})
+            }
 
           
-    </div>
-  )
+        </div>
+    )
 });
 
 Layer.propTypes = {
-  zIndex: PropTypes.number.isRequired,
-  clickable: PropTypes.bool.isRequired,
-  mapParams: PropTypes.shape({
-    width: PropTypes.number.isRequired,
-    height: PropTypes.number.isRequired
-  }),
+    zIndex: PropTypes.number.isRequired,
+    clickable: PropTypes.bool.isRequired,
+    mapParams: PropTypes.shape({
+        width: PropTypes.number.isRequired,
+        height: PropTypes.number.isRequired
+    }),
 }

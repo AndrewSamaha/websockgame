@@ -19,7 +19,7 @@ const GenericFied = ({label, value}) => {
     }}
     onMouseEnter={() => setHover(true)}
     onMouseLeave={() => setHover(false)}>
-    {label}: {value}
+        {label}: {value}
     </div>)
 }
 const UserFieldsRow = () => {
@@ -109,7 +109,7 @@ export const GlobalStatusBar = () => {
             flexDirection: 'column',
             alignItems: 'left',
             justifyContent: 'space-between'
-            }}>
+        }}>
         <UserFieldsRow />
         <ViewPortRow />
     </div>)

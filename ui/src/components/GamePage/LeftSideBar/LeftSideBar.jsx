@@ -41,14 +41,14 @@ export const HealthBar = ({ health, maxHealth }) => {
                 width: '90%',
                 border: '1px solid black'
             }}>
-                <div
-                    style={{
-                        backgroundColor: healthColor,
-                        height: '100%',
-                        width: `${ratio * 100}%`
-                    }}>
+            <div
+                style={{
+                    backgroundColor: healthColor,
+                    height: '100%',
+                    width: `${ratio * 100}%`
+                }}>
 
-                </div>
+            </div>
         </div>
     );
 }
@@ -106,10 +106,10 @@ export const BuildsList = ({ builds }) => {
                 justifyContent: 'flex-start',
                 alignItems: 'flex-start',
                 flexShrink: 1
-                }}>
+            }}>
                 {uniq(builds).map((build, idx) => <span id={'buildListItem'} key={`build-${idx}`} style={{
-                        flexShrink: 1,
-                    }}>{build}</span>)}
+                    flexShrink: 1,
+                }}>{build}</span>)}
             </div>
         </div>
     );
@@ -124,15 +124,15 @@ export const LeftSideBar = () => {
     const backgroundColor = belongsToPlayer ? 'rgba(0, 100, 0, 1)' : owner.username === 'server' ? 'rgba(100, 100, 100, .4)' : 'rgba(100, 0, 0, 1)';
     return (
         <div id={'leftSideBar'}
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            backgroundColor,
-            height: '580px',
-            width: '100%',
-            justifyContent: 'flex-start',
-            overflowY: 'hidden'
-          }}>
+            style={{
+                display: 'flex',
+                flexDirection: 'column',
+                backgroundColor,
+                height: '580px',
+                width: '100%',
+                justifyContent: 'flex-start',
+                overflowY: 'hidden'
+            }}>
             <style>
                 {`
                     #leftSideBar hr {

@@ -4,7 +4,7 @@ import { BACKGROUND_TILE_SIZE } from '../../../../constants/backgroundtiles';
 
 export const BackgroundTile = observer(({ id, viewport, tile }) => {
     if (!tile) // handle the situation when char is null (it's been deleted)
-      return (<div style={{display: 'none'}} />)
+        return (<div style={{display: 'none'}} />)
   
     const { pos } = tile;
     const { x, y } = pos; 
@@ -22,9 +22,9 @@ export const BackgroundTile = observer(({ id, viewport, tile }) => {
             width: `${BACKGROUND_TILE_SIZE.width}px`,
             left: `${x}px`,
             top: `${y}px`
-            }}>
+        }}>
             {tile.asciiArt}
         </pre>
     );
-  });
+});
   

@@ -8,11 +8,11 @@ import { SocketProvider } from './components/SocketProvider/SocketProvider';
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <SocketProvider>
-        <QueryClientProvider client={queryClient}>
-          <App />
-        </QueryClientProvider>
-    </SocketProvider>
-  </React.StrictMode>,
+    <React.StrictMode>
+        <SocketProvider>
+            <QueryClientProvider client={queryClient}>
+                <App />
+            </QueryClientProvider>
+        </SocketProvider>
+    </React.StrictMode>,
 )
