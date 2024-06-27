@@ -24,5 +24,5 @@ export const straightLineMove = (pos, mapParams, delta) => {
         dir: pos.dir,
         speed: pos.speed
     }
-;
+    ;
 }

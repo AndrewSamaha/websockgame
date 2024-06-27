@@ -46,7 +46,7 @@ export const LandingPage = () => {
         color: 'white',
         cursor: loginEnabled ? 'pointer' : 'not-allowed',
         opacity: loginEnabled ? 1 : 0.5,
-      };
+    };
 
     return (
         <div style={{height: 'auto'}}>

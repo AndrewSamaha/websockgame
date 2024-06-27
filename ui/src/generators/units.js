@@ -163,8 +163,8 @@ export const makeBase = (args) => ({
     health: 300,
     representation: '#',
     pos: {
-      ...rndPos(),
-      dir: Math.PI*.5
+        ...rndPos(),
+        dir: Math.PI*.5
     },
     shoots: false,
     moves: false,
@@ -181,8 +181,8 @@ export const makeFarm = (args) => ({
     health: 100,
     representation: 'F',
     pos: {
-      ...rndPos(),
-      dir: Math.PI*.5
+        ...rndPos(),
+        dir: Math.PI*.5
     },
     shoots: false,
     moves: false,
@@ -196,8 +196,8 @@ export const makeLibrary = (args) => ({
     health: 100,
     representation: 'L',
     pos: {
-      ...rndPos(),
-      dir: Math.PI*.5
+        ...rndPos(),
+        dir: Math.PI*.5
     },
     shoots: false,
     moves: false,
@@ -215,8 +215,8 @@ export const makeBarracks = (args) => ({
     health: 200,
     representation: 'B',
     pos: {
-      ...rndPos(),
-      dir: Math.PI*.5
+        ...rndPos(),
+        dir: Math.PI*.5
     },
     shoots: false,
     moves: false,
@@ -235,8 +235,8 @@ export const makeTower = (args) => ({
     health: 100,
     representation: 'T',
     pos: {
-      ...rndPos(),
-      dir: Math.PI*.5
+        ...rndPos(),
+        dir: Math.PI*.5
     },
     shoots: true,
     moves: false,
