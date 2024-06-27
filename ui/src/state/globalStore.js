@@ -78,7 +78,7 @@ export const globalStore = observable({
               ...args,
               unit: globalStore.ui.getSelectedChar()
             });
-        globalStore.ui.setLayerRightClickAction(null);
+        // globalStore.ui.setLayerRightClickAction(null);
       },
       hovered_char: null,
       selected_char: null,

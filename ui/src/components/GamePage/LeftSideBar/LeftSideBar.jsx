@@ -78,7 +78,7 @@ export const ActionsList = ({ actions }) => {
         }}>
             actions
             <div style={{fontSize: '.6em', height: '100%', justifyContent: 'flex-start', }}>
-                {uniq(Object.values(actions)).map((actionName) => <span style={{justifyContent: 'flex-start'}}>{mapActionToUIText(actionName)}</span>)}
+                {uniq(Object.values(actions)).map((actionName, idx) => <span key={`actionlistItem${idx}`} style={{justifyContent: 'flex-start'}}>{mapActionToUIText(actionName)}</span>)}
             </div>
         </div>
     );
@@ -127,7 +127,6 @@ export const LeftSideBar = () => {
           style={{
             display: 'flex',
             flexDirection: 'column',
-            // alignItems: 'flex-start',
             backgroundColor,
             height: '580px',
             width: '100%',
