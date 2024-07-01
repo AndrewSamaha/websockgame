@@ -5,6 +5,7 @@ import { animate as animateFrag } from '../animators/frag';
 import { addChar } from '../state/chars';
 import { MAX_FRAGS, MIN_FRAGS } from '../constants/frags';
 import { ACTIONS } from './actions';
+import { build } from 'vite';
 
 export const CHARTYPES = {
     NONE: 'NONE',
@@ -75,7 +76,8 @@ export const makeBug = (args) => ({
 
 export const makeWorker = (args) => ({
     ...makeChar(),
-    representation: 'u',
+    representation: 'w',
+    buildHotKey: 'w',
     moves: true,
     maxHealth: 75,
     health: 75,
@@ -97,7 +99,8 @@ export const makeWorker = (args) => ({
 
 export const makeFighter = (args) => ({
     ...makeWorker(),
-    representation: 'a',
+    representation: 'f',
+    buildHotKey: 'f',
     moves: true,
     maxHealth: 200,
     health: 200,
@@ -109,7 +112,8 @@ export const makeFighter = (args) => ({
 
 export const makeArcher = (args) => ({
     ...makeFighter(),
-    representation: 'e',
+    representation: 'a',
+    buildHotKey: 'a',
     moves: true,
     maxHealth: 150,
     health: 150,
@@ -123,7 +127,8 @@ export const makeArcher = (args) => ({
 
 export const makeMage = (args) => ({
     ...makeArcher(),
-    representation: 'n',
+    representation: 'm',
+    buildHotKey: 'm',
     moves: true,
     maxHealth: 60,
     health: 60,
@@ -138,6 +143,7 @@ export const makeMage = (args) => ({
 export const makeGolem = (args) => ({
     ...makeFighter(),
     representation: 'g',
+    buildHotKey: 'g',
     moves: true,
     maxHealth: 400,
     health: 400,
@@ -159,9 +165,10 @@ export const makeBullet = (args) => ({
 
 export const makeBase = (args) => ({
     ...makeChar(),
+    representation: '#',
+    buildHotKey: 'b',
     maxHealth: 300,
     health: 300,
-    representation: '#',
     pos: {
         ...rndPos(),
         dir: Math.PI*.5
@@ -177,9 +184,10 @@ export const makeBase = (args) => ({
 
 export const makeFarm = (args) => ({
     ...makeChar(),
+    representation: 'F',
+    buildHotKey: 'f',
     maxHealth: 100,
     health: 100,
-    representation: 'F',
     pos: {
         ...rndPos(),
         dir: Math.PI*.5
@@ -192,9 +200,10 @@ export const makeFarm = (args) => ({
 
 export const makeLibrary = (args) => ({
     ...makeChar(),
+    representation: 'L',
+    buildHotKey: 'l',
     maxHealth: 100,
     health: 100,
-    representation: 'L',
     pos: {
         ...rndPos(),
         dir: Math.PI*.5
@@ -211,9 +220,10 @@ export const makeLibrary = (args) => ({
 
 export const makeBarracks = (args) => ({
     ...makeChar(),
+    representation: 'B',
+    buildHotKey: 'b',
     maxHealth: 200,
     health: 200,
-    representation: 'B',
     pos: {
         ...rndPos(),
         dir: Math.PI*.5
@@ -231,9 +241,10 @@ export const makeBarracks = (args) => ({
 
 export const makeTower = (args) => ({
     ...makeChar(),
+    representation: 'T',
+    buildHotKey: 't',
     maxHealth: 100,
     health: 100,
-    representation: 'T',
     pos: {
         ...rndPos(),
         dir: Math.PI*.5

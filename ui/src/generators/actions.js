@@ -7,6 +7,7 @@ export const ACTIONS = {
     setMoveDestination: {
         name: 'setMoveDestination',
         label: 'Move',
+        defaultHotKey: 'm',
         initiate: ({unit, requestUnitAction, worldCoordinates}) => {
             console.log('calling initiate on setMoveDestination')
             console.log('unit here:')
@@ -24,11 +25,13 @@ export const ACTIONS = {
     setAttackTarget: {
         name: 'setAttackTarget',
         label: 'Attack',
+        defaultHotKey: 'x',
         initiate: () => {}
     },
     setResourceTarget: {
         name: 'setResourceTarget',
         label: 'Gather',
+        defaultHotKey: 'g',
         initate: () => {}
     },
 }

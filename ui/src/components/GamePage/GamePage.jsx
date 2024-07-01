@@ -29,6 +29,7 @@ export const GamePage = () => {
         const terminalInput = document.getElementById('TerminalInput');
         const onTerminal = () => document.activeElement === terminalInput;
         const handleKeyDown = (e) => {
+            console.log('keydown', e.code, e.key);
             if (onTerminal()) {
                 if (e.key === 'Escape') e.target.blur(); // remove focus from the input field
                 return;
